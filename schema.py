@@ -7,13 +7,16 @@
 主要变更（相比 v1）：
   - 移除 SD 专属字段 quality_tags / lora_tags（进入可选的 SDExtras 子块）
   - subject 支持 str（通用）或 PersonSubject（人物细粒度控制）
-  - lighting / camera 升级为嵌套对象，支持逐子字段修改
+  - lighting / camera 支持嵌套对象（细粒度）或字符串（兼容模式）
+    - 嵌套对象可逐子字段修改，评分时给质量加成
+    - 字符串兼容老格式/LLM 简短输出，不报错，评分时给基础分
   - 新增 must_keep / avoid（constraints），是「保持维度稳定」的核心字段
   - negative_prompt 改为 List[str]，方便逐条追加/删除
 """
 import json
+import re
 from typing import List, Optional, Union
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 
 # ── 子结构：人物主体（仅含人物时使用） ────────────────────────────────────────
@@ -63,6 +66,10 @@ class ImageJSON(BaseModel):
     """
     结构化 image-json：每个字段对应一个独立的视觉控制维度。
     修改任意一个字段，其余字段保持不变，即可实现精准的单维度编辑。
+
+    lighting / camera 兼容策略：
+      - 优先：LightingDetail / CameraDetail 嵌套对象（评分时给质量加成）
+      - 兼容：普通字符串（不报错，evaluate 时给基础分，system prompt 会引导逐步升级）
     """
 
     # ── 主体 ──
@@ -70,30 +77,50 @@ class ImageJSON(BaseModel):
     subject: Union[str, PersonSubject]
 
     # ── 场景 / 背景 ──
-    background:  Optional[str] = None   # 背景元素，如 "cherry blossom park"
-    environment: Optional[str] = None   # 环境氛围，如 "misty forest, damp air"
-    time_of_day: Optional[str] = None   # "golden hour", "midnight", "overcast noon"
+    background:  Optional[str] = None
+    environment: Optional[str] = None
+    time_of_day: Optional[str] = None
 
     # ── 视觉风格 ──
-    style:            List[str] = []    # "anime", "watercolor", "cinematic realism"
-    artist_reference: List[str] = []    # "artgerm", "wlop", "alphonse mucha"
-    mood:             Optional[str] = None   # "melancholic", "energetic", "serene"
-    color_palette:    Optional[str] = None   # "muted pastels", "high contrast neon"
+    style:            List[str] = []
+    artist_reference: List[str] = []
+    mood:             Optional[str] = None
+    color_palette:    Optional[str] = None
 
-    # ── 摄影参数（嵌套，逐维度可控）──
-    lighting: Optional[LightingDetail] = None
-    camera:   Optional[CameraDetail]   = None
+    # ── 摄影参数 ──
+    # 支持嵌套对象（精细控制）或字符串（兼容模式）
+    # Union 顺序：先尝试 dict→嵌套对象，若 LLM 输出字符串则保留为 str
+    lighting: Optional[Union[LightingDetail, str]] = None
+    camera:   Optional[Union[CameraDetail,   str]] = None
 
     # ── Constraints（核心）──
-    # 这两个字段是「保持维度稳定」的关键，明确告诉生成模型哪些不能变
-    must_keep: List[str] = []   # 必须保留的元素，如 ["red ribbon", "freckles"]
-    avoid:     List[str] = []   # 应当避免的内容，如 ["extra limbs", "text watermark"]
+    must_keep: List[str] = []
+    avoid:     List[str] = []
 
-    # ── 负面提示词（列表化，方便逐条追加/删除）──
+    # ── 负面提示词 ──
     negative_prompt: List[str] = []
 
-    # ── SD 专属扩展（可选，非 SD 流程留空）──
+    # ── SD 专属扩展（非 SD 流程留空）──
     sd_extras: Optional[SDExtras] = None
+
+    # ── 兼容旧格式：quality_tags / lora_tags 直接出现在顶层时自动迁移 ──
+    quality_tags: Optional[List[str]] = None
+    lora_tags:    Optional[List[str]] = None
+
+    @model_validator(mode="after")
+    def _migrate_sd_extras(self):
+        """把顶层 quality_tags / lora_tags 自动迁移到 sd_extras，保持向后兼容。"""
+        qt = self.quality_tags or []
+        lt = self.lora_tags or []
+        if qt or lt:
+            if self.sd_extras is None:
+                self.sd_extras = SDExtras(quality_tags=qt, lora_tags=lt)
+            else:
+                self.sd_extras.quality_tags = list(set(self.sd_extras.quality_tags + qt))
+                self.sd_extras.lora_tags    = list(set(self.sd_extras.lora_tags    + lt))
+            self.quality_tags = None
+            self.lora_tags    = None
+        return self
 
     @field_validator("subject", mode="before")
     @classmethod
@@ -110,6 +137,14 @@ class ImageJSON(BaseModel):
         if isinstance(v, str):
             return [s.strip() for s in v.split(",") if s.strip()]
         return v
+
+    def lighting_is_nested(self) -> bool:
+        """True 表示 lighting 使用了嵌套对象（精细结构），False 表示字符串兼容模式。"""
+        return isinstance(self.lighting, LightingDetail)
+
+    def camera_is_nested(self) -> bool:
+        """True 表示 camera 使用了嵌套对象（精细结构），False 表示字符串兼容模式。"""
+        return isinstance(self.camera, CameraDetail)
 
 
 # ── 示例输出（人物场景）────────────────────────────────────────────────────────
@@ -185,7 +220,6 @@ def parse_and_validate(json_str: str) -> tuple:
     """
     # 尝试提取 JSON 块（LLM 可能包裹在 markdown code block 里）
     if "```" in json_str:
-        import re
         match = re.search(r"```(?:json)?\s*({.*?})\s*```", json_str, re.DOTALL)
         if match:
             json_str = match.group(1)
@@ -205,3 +239,14 @@ if __name__ == "__main__":
     print(EXAMPLE_OUTPUT.model_dump_json(indent=2))
     print("\n=== 示例 image-json（场景）===")
     print(EXAMPLE_LANDSCAPE.model_dump_json(indent=2))
+
+    # 验证字符串兼容模式不报错
+    test_str = ImageJSON(
+        subject="a girl",
+        lighting="soft natural light",
+        camera="85mm close-up shot",
+    )
+    print("\n=== 字符串兼容模式 ===")
+    print(test_str.model_dump_json(indent=2))
+    print(f"lighting_is_nested: {test_str.lighting_is_nested()}")
+    print(f"camera_is_nested:   {test_str.camera_is_nested()}")

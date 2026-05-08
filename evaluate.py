@@ -2,17 +2,16 @@
 双通道评估模块：规则评分 + LLM Judge（带 Feedback）
 支持通过 LLMClient 切换 provider
 
-评分说明（rule_score）v2：
+评分说明（rule_score）v3：
   - 核心字段覆盖率  (35%)：subject / style / lighting / camera / background / mood
-  - 字段填充质量    (30%)：各字段内容长度充分性（不依赖字面 token 匹配）
-  - Constraints 覆盖 (20%)：must_keep + avoid 是精准维度控制的核心
+  - 字段填充质量    (25%)：各字段内容长度充分性
+    + 结构质量加成  ( 5%)：lighting/camera 使用嵌套对象时额外给分
+  - Constraints 覆盖 (20%)：must_keep + avoid
   - 负面提示词质量  (15%)：negative_prompt 列表是否有实质内容
 
-  移除：quality_tags / lora_tags 评分（SD 专属字段，不计入通用评分）
-
 用法示例：
-  python evaluate.py                  # 全量评估
-  python evaluate.py -n 10            # 只测前 10 条
+  python evaluate.py                      # 全量评估
+  python evaluate.py -n 10                # 只测前 10 条
   python evaluate.py -n 10 --offset 20   # 跳过前 20 条，测第 21~30 条
   python evaluate.py -n 10 --shuffle     # 随机抽 10 条测试
 """
@@ -20,7 +19,7 @@ import json
 import argparse
 import random
 import dspy
-from schema import parse_and_validate, ImageJSON
+from schema import parse_and_validate, ImageJSON, LightingDetail, CameraDetail
 from llm_client import get_llm
 
 
@@ -46,12 +45,9 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     """
     基于规则的评分，满分 1.0。
 
-    v2 变更：
-    1. 核心字段移除 quality_tags（SD 专属），加入 background
-    2. 字段填充质量：lighting/camera 改为读取嵌套对象的总字符长度
-    3. 新增 Constraints 覆盖评分（must_keep + avoid），权重 20%
-    4. 新增 negative_prompt 质量评分，权重 15%
-    5. 总权重：35% + 30% + 20% + 15% = 100%
+    v3 变更：
+    1. lighting/camera 兼容字符串：有内容就给基础分，嵌套对象额外给结构质量加成
+    2. 总权重：35% + 30%(=25%质量+5%结构加成) + 20% + 15% = 100%
     """
     score = 0.0
 
@@ -60,12 +56,12 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     filled = sum(1 for f in core_fields if _content_len(getattr(parsed, f, None)) > 0)
     score += (filled / len(core_fields)) * 0.35
 
-    # ── Part 2: 字段填充质量 (30%) ──
+    # ── Part 2: 字段填充质量 (25%) + 结构质量加成 (5%) ──
     THRESHOLDS = {
         "subject":     30,
         "style":       10,
-        "lighting":    15,
-        "camera":      15,
+        "lighting":    10,   # 字符串模式阈值放宽到 10（嵌套模式天然更长）
+        "camera":      10,
         "background":  10,
         "mood":         5,
     }
@@ -73,7 +69,13 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     for field, threshold in THRESHOLDS.items():
         clen = _content_len(getattr(parsed, field, None))
         quality_scores.append(min(clen / threshold, 1.0))
-    score += (sum(quality_scores) / len(quality_scores)) * 0.30
+    score += (sum(quality_scores) / len(quality_scores)) * 0.25
+
+    # 结构质量加成：lighting/camera 使用嵌套对象时各给 2.5%
+    if parsed.lighting_is_nested():
+        score += 0.025
+    if parsed.camera_is_nested():
+        score += 0.025
 
     # ── Part 3: Constraints 覆盖率 (20%) ──
     has_must_keep = _content_len(parsed.must_keep) > 3
@@ -97,7 +99,7 @@ class JSONQualityJudge(dspy.Signature):
 
     评估重点：
     1. subject 字段粒度是否足够（人物场景是否使用了嵌套的 face/hair/pose/attire）
-    2. lighting / camera 是否精确描述了独立维度
+    2. lighting / camera 是否精确描述了独立维度（嵌套对象优于字符串）
     3. must_keep / avoid（constraints）是否有效捕捉了原 prompt 的关键要素
     4. negative_prompt 是否完整
     5. 是否存在信息丢失或维度混淆（把摄影参数写进 mood 等）
@@ -134,8 +136,7 @@ def metric_with_feedback(
         feedback = (
             f"JSON 解析/校验失败：{err}。"
             "请确保严格输出合法 JSON，不含任何额外文字或 markdown。"
-            "subject 支持字符串或包含 face/hair/pose/attire 等字段的对象；"
-            "lighting/camera 支持嵌套对象或字符串。"
+            "lighting/camera 可以是字符串（兼容模式）或嵌套对象（精细模式，推荐）。"
         )
         return dspy.Prediction(score=0.0, feedback=feedback)
 
@@ -161,7 +162,7 @@ def metric_with_feedback(
     return dspy.Prediction(score=round(final, 4), feedback=feedback)
 
 
-# ── 批量评估入口 ──────────────────────────────────────────────────────────────
+# ── CLI 参数解析 ──────────────────────────────────────────────────────────────
 
 def _parse_args():
     p = argparse.ArgumentParser(
@@ -177,31 +178,30 @@ def _parse_args():
         """,
     )
     p.add_argument("-n", "--limit",
-                   type=int, default=None,
-                   metavar="N",
+                   type=int, default=None, metavar="N",
                    help="只评估 N 条数据（默认全部）")
     p.add_argument("--offset",
-                   type=int, default=0,
-                   metavar="K",
+                   type=int, default=0, metavar="K",
                    help="跳过前 K 条（先 offset 再 limit，不与 --shuffle 同用）")
     p.add_argument("--shuffle",
                    action="store_true",
                    help="随机打乱后再取前 N 条（需配合 -n 使用）")
     p.add_argument("--seed",
                    type=int, default=42,
-                   help="--shuffle 时的随机种子（默认 42，保证可复现）")
+                   help="shuffle 时的随机种子（默认 42，保证可复现）")
     p.add_argument("--sp", "--system-prompt",
                    dest="sp_path",
                    default="outputs/system_prompt_v0.txt",
                    metavar="FILE",
-                   help="指定 System Prompt 文件路径（默认 outputs/system_prompt_v0.txt）")
+                   help="指定 System Prompt 文件路径")
     p.add_argument("--data",
                    dest="data_path",
-                   default=None,
-                   metavar="FILE",
+                   default=None, metavar="FILE",
                    help="指定数据文件路径（默认自动查找 prompts_filtered.json / prompts.json）")
     return p.parse_args()
 
+
+# ── 批量评估入口 ──────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     from pathlib import Path
@@ -231,12 +231,8 @@ if __name__ == "__main__":
     if args.shuffle:
         random.seed(args.seed)
         random.shuffle(dataset)
-        if args.offset:
-            print("[警告] --shuffle 与 --offset 同时使用时，offset 在 shuffle 之后生效")
-    
     if args.offset:
         dataset = dataset[args.offset:]
-    
     if args.limit is not None:
         if args.limit <= 0:
             print("--limit 必须是正整数")
@@ -245,12 +241,9 @@ if __name__ == "__main__":
 
     total = len(dataset)
     tag = ""
-    if args.shuffle:
-        tag += f" shuffle(seed={args.seed})"
-    if args.offset:
-        tag += f" offset={args.offset}"
-    if args.limit is not None:
-        tag += f" limit={args.limit}"
+    if args.shuffle:  tag += f" shuffle(seed={args.seed})"
+    if args.offset:   tag += f" offset={args.offset}"
+    if args.limit:    tag += f" limit={args.limit}"
     print(f"评估数据集：{data_path}  共 {total} 条{tag}")
 
     # ── 加载 System Prompt ──
@@ -274,8 +267,10 @@ if __name__ == "__main__":
             converted_results.append({
                 "index": i,
                 "score": s,
-                "raw_prompt": raw,
-                "image_json": parsed.model_dump(),
+                "lighting_nested": parsed.lighting_is_nested(),
+                "camera_nested":   parsed.camera_is_nested(),
+                "raw_prompt":  raw,
+                "image_json":  parsed.model_dump(),
             })
             if s < 0.5:
                 failures.append({"raw_prompt": raw, "output": output, "error": f"低分: {s}"})
@@ -294,14 +289,23 @@ if __name__ == "__main__":
             print(f"[{i+1}/{total}] 当前均分: {sum(scores)/len(scores):.3f}")
 
     avg = sum(scores) / len(scores)
+    nested_light = sum(1 for r in converted_results if r.get("lighting_nested"))
+    nested_cam   = sum(1 for r in converted_results if r.get("camera_nested"))
     print(f"\n最终平均分: {avg:.3f}")
     print(f"失败案例数: {len(failures)}")
+    print(f"lighting 嵌套率: {nested_light}/{total}  camera 嵌套率: {nested_cam}/{total}")
 
     out = Path("outputs")
     out.mkdir(exist_ok=True)
 
     with open(out / "eval_report.json", "w", encoding="utf-8") as f:
-        json.dump({"avg_score": avg, "scores": scores, "failures": failures}, f, ensure_ascii=False, indent=2)
+        json.dump({
+            "avg_score": avg,
+            "scores": scores,
+            "lighting_nested_count": nested_light,
+            "camera_nested_count":   nested_cam,
+            "failures": failures,
+        }, f, ensure_ascii=False, indent=2)
     print("评估报告已保存至 outputs/eval_report.json")
 
     with open(out / "converted_results.json", "w", encoding="utf-8") as f:
