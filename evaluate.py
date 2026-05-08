@@ -9,8 +9,16 @@
   - 负面提示词质量  (15%)：negative_prompt 列表是否有实质内容
 
   移除：quality_tags / lora_tags 评分（SD 专属字段，不计入通用评分）
+
+用法示例：
+  python evaluate.py                  # 全量评估
+  python evaluate.py -n 10            # 只测前 10 条
+  python evaluate.py -n 10 --offset 20   # 跳过前 20 条，测第 21~30 条
+  python evaluate.py -n 10 --shuffle     # 随机抽 10 条测试
 """
 import json
+import argparse
+import random
 import dspy
 from schema import parse_and_validate, ImageJSON
 from llm_client import get_llm
@@ -48,18 +56,16 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     score = 0.0
 
     # ── Part 1: 核心字段覆盖率 (35%) ──
-    # 检测 6 个核心字段是否有实质内容
     core_fields = ["subject", "style", "lighting", "camera", "background", "mood"]
     filled = sum(1 for f in core_fields if _content_len(getattr(parsed, f, None)) > 0)
     score += (filled / len(core_fields)) * 0.35
 
     # ── Part 2: 字段填充质量 (30%) ──
-    # 各字段内容达到阈值即视为充分，lighting/camera 以嵌套对象总长度计
     THRESHOLDS = {
-        "subject":     30,   # 主体描述足够详细
-        "style":       10,   # 至少一两个风格词
-        "lighting":    15,   # 嵌套对象拼接后至少 15 字符
-        "camera":      15,   # 同上
+        "subject":     30,
+        "style":       10,
+        "lighting":    15,
+        "camera":      15,
         "background":  10,
         "mood":         5,
     }
@@ -70,17 +76,14 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     score += (sum(quality_scores) / len(quality_scores)) * 0.30
 
     # ── Part 3: Constraints 覆盖率 (20%) ──
-    # must_keep 和 avoid 是「精准维度控制」的核心字段
-    # 各占 10%，有实质内容则得满分
     has_must_keep = _content_len(parsed.must_keep) > 3
     has_avoid     = _content_len(parsed.avoid) > 3
     score += 0.10 * (1.0 if has_must_keep else 0.0)
     score += 0.10 * (1.0 if has_avoid else 0.0)
 
     # ── Part 4: negative_prompt 质量 (15%) ──
-    # 有实质内容（至少 3 个 token）则得满分
     neg_len = _content_len(parsed.negative_prompt)
-    score += 0.15 * min(neg_len / 20, 1.0)   # 20 字符作为充分阈值
+    score += 0.15 * min(neg_len / 20, 1.0)
 
     return round(score, 4)
 
@@ -160,30 +163,103 @@ def metric_with_feedback(
 
 # ── 批量评估入口 ──────────────────────────────────────────────────────────────
 
+def _parse_args():
+    p = argparse.ArgumentParser(
+        description="批量评估 image-json 转换质量",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+示例：
+  python evaluate.py                      全量评估
+  python evaluate.py -n 10                只测前 10 条
+  python evaluate.py -n 10 --offset 20   跳过前 20 条，测第 21~30 条
+  python evaluate.py -n 10 --shuffle     随机抽 10 条测试
+  python evaluate.py --sp outputs/system_prompt_v1.txt  指定 System Prompt 文件
+        """,
+    )
+    p.add_argument("-n", "--limit",
+                   type=int, default=None,
+                   metavar="N",
+                   help="只评估 N 条数据（默认全部）")
+    p.add_argument("--offset",
+                   type=int, default=0,
+                   metavar="K",
+                   help="跳过前 K 条（先 offset 再 limit，不与 --shuffle 同用）")
+    p.add_argument("--shuffle",
+                   action="store_true",
+                   help="随机打乱后再取前 N 条（需配合 -n 使用）")
+    p.add_argument("--seed",
+                   type=int, default=42,
+                   help="--shuffle 时的随机种子（默认 42，保证可复现）")
+    p.add_argument("--sp", "--system-prompt",
+                   dest="sp_path",
+                   default="outputs/system_prompt_v0.txt",
+                   metavar="FILE",
+                   help="指定 System Prompt 文件路径（默认 outputs/system_prompt_v0.txt）")
+    p.add_argument("--data",
+                   dest="data_path",
+                   default=None,
+                   metavar="FILE",
+                   help="指定数据文件路径（默认自动查找 prompts_filtered.json / prompts.json）")
+    return p.parse_args()
+
+
 if __name__ == "__main__":
     from pathlib import Path
     from optimize_gepa import build_dspy_lm
+
+    args = _parse_args()
 
     llm = get_llm()
     dspy_lm = build_dspy_lm(llm)
     dspy.configure(lm=dspy_lm)
 
-    # 优先读取 filtered 数据，回退到原始数据
-    data_path = Path("data/prompts_filtered.json")
+    # ── 加载数据 ──
+    if args.data_path:
+        data_path = Path(args.data_path)
+    else:
+        data_path = Path("data/prompts_filtered.json")
+        if not data_path.exists():
+            data_path = Path("data/prompts.json")
     if not data_path.exists():
-        data_path = Path("data/prompts.json")
-    if not data_path.exists():
-        print("请先运行 data/fetch_civitai.py 采集数据")
+        print(f"数据文件不存在：{data_path}\n请先运行 data/fetch_civitai.py 采集数据")
         exit(1)
 
     with open(data_path, encoding="utf-8") as f:
         dataset = json.load(f)
 
-    sp_path = Path("outputs/system_prompt_v0.txt")
+    # ── 按参数切片 ──
+    if args.shuffle:
+        random.seed(args.seed)
+        random.shuffle(dataset)
+        if args.offset:
+            print("[警告] --shuffle 与 --offset 同时使用时，offset 在 shuffle 之后生效")
+    
+    if args.offset:
+        dataset = dataset[args.offset:]
+    
+    if args.limit is not None:
+        if args.limit <= 0:
+            print("--limit 必须是正整数")
+            exit(1)
+        dataset = dataset[:args.limit]
+
+    total = len(dataset)
+    tag = ""
+    if args.shuffle:
+        tag += f" shuffle(seed={args.seed})"
+    if args.offset:
+        tag += f" offset={args.offset}"
+    if args.limit is not None:
+        tag += f" limit={args.limit}"
+    print(f"评估数据集：{data_path}  共 {total} 条{tag}")
+
+    # ── 加载 System Prompt ──
+    sp_path = Path(args.sp_path)
     if not sp_path.exists():
-        print(f"请先创建 {sp_path}")
+        print(f"System Prompt 文件不存在：{sp_path}")
         exit(1)
     system_prompt = sp_path.read_text(encoding="utf-8")
+    print(f"System Prompt：{sp_path}")
 
     scores, failures, converted_results = [], [], []
 
@@ -195,14 +271,12 @@ if __name__ == "__main__":
         if parsed:
             s = rule_score(raw, parsed)
             scores.append(s)
-
             converted_results.append({
                 "index": i,
                 "score": s,
                 "raw_prompt": raw,
                 "image_json": parsed.model_dump(),
             })
-
             if s < 0.5:
                 failures.append({"raw_prompt": raw, "output": output, "error": f"低分: {s}"})
         else:
@@ -217,7 +291,7 @@ if __name__ == "__main__":
             })
 
         if (i + 1) % 10 == 0:
-            print(f"[{i+1}/{len(dataset)}] 当前均分: {sum(scores)/len(scores):.3f}")
+            print(f"[{i+1}/{total}] 当前均分: {sum(scores)/len(scores):.3f}")
 
     avg = sum(scores) / len(scores)
     print(f"\n最终平均分: {avg:.3f}")
