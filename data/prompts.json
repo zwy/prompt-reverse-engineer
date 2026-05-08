@@ -10,16 +10,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d0b3775e-8136-402c-911b-c78a9d4d8b00/original=true/d0b3775e-8136-402c-911b-c78a9d4d8b00.jpeg"
   },
   {
-    "id": 122718670,
-    "prompt": "Create an incredibly lifelike cinematic style realistic image that is indistinguishable from reality of:\n{\n  \"subject\": {\n    \"identity\": \"Ariel, The Little Mermaid\",\n    \"physical_attributes\": {\n      \"build\": \"slim, graceful, youthful mermaid form with moderate bust size\",\n      \"skin\": \"fair, smooth, luminous under water light\",\n      \"hair\": \"exceptionally long, vibrant crimson-red flowing hair with subtle iridescent highlights\",\n      \"eyes\": \"large, wide-set blue eyes with detailed reflection and tear glisten\",\n      \"tail\": \"shimmering emerald-green fish tail with translucent dorsal and caudal fins, adorned with delicate starfish and coral motifs\"\n    },\n    \"anatomical_details\": {\n      \"breast_physics\": \"natural, anatomically accurate fullness; retrousse breasts with soft tissue dynamics\",\n      \"nipples\": \"prominent, realistically rendered with texture and specular highlight; include 'nipple pull' effect for tension realism\",\n      \"tweaks_and_chains\": \"prominant hooks through nipples; no overt jewelry but implied tactile sensation via lighting and curvature\",\n      \"posture\": \"arms clasped tightly behind her back, body arches slightly backward â suggesting restrained fear or emotional strain\"\n    }\n  },\n  \"composition\": {\n    \"frame\": \"full-body vertical portrait centered in depth-of-field focus\",\n    \"angle\": \"medium-low angle shot capturing torso to tail apex\",\n    \"perspective\": \"cinematic underwater perspective emphasizing volumetric clarity and spatial immersion\",\n    \"focus\": \"sharp focal plane on Arielâs face and upper torso with gentle bokeh trailing off toward distant reef background\",\n    \"dynamic_elements\": [\n      \"tears streaming down cheeks with micro-glints reflecting ambient bioluminescence\",\n      \"blush radiating softly across temples and neck due to stress-induced vasodilation\"\n    ]\n  },\n  \"clothing\": {\n    \"attire_type\": \"completely nude\",\n    \"accessories\": [],\n    \"body_modifications\": [\n      \"fishing hook embedded through nipples, partially oxidized rust tone, dangling faintly by wire tether, pulling breasts upwards\",\n      \"anchor tattoo inscribed along right forearm extending up past elbow â metallic sheen with engraved details\",\n      \"shark motif tattoo snaking over left bicep with serrated fin lines, ink gradient fading subtly into seafoam hue\"\n    ],\n    \"texture_emphasis\": \"no fabric or adornmentâevery contour defined through natural flesh mapping, lipid layer simulation, and fluid displacement effects beneath skin surface\"\n  },\n  \"environment\": {\n    \"location\": \"deep tropical marine zone\",\n    \"setting_description\": \"underwater scene with sunlit plankton currents above, scattered kelp fronds drifting overhead, abyssal pressure compressing surrounding space gently\",\n    \"background_objects\": [\n      \"coral reefs forming jagged edges against mid-ground\", \n      \"soft sediment layers shifting around feet\",\n      \"distant silhouettes of predatory sharks gliding horizontally out of view\"\n    ],\n    \"depth_layering\": \"foreground sharp â medium distance blurred â deep shadowed trenches beyond\"\n  },\n  \"lighting\": {\n    \"source\": \"diffused sunlight filtering vertically downward from ocean surface through fractured wavefront patterns\",\n    \"color_temperature\": \"cool turquoise-blue base punctuated by warm amber refractions where light hits her skin and scales\",\n    \"illumination_style\": \"high dynamic range with rim-light accentuating outline of spine/shoulder blades while casting inner shadows under ribs and tail crests\",\n    \"reflective_surface_effect\": \"her wet hair reflects fragmented daylight beams as if liquid glass strands suspended in motion\",\n    \"shadow_quality\": \"subsurface scattering shadows enhancing three-dimensional volume without harsh contrast\"\n  },\n  \"mood\": {\n    \"emotional_state\": \"terrified yet defiant\",\n    \"expressions\": {\n      \"facial_expression\": \"clenched jawline with gritted teeth showing slight enamel wear\",\n      \"eye_language\": \"widened pupils staring upward, unblinking terror mixed with resolve\",\n      \"physiological_indicators\": \"visible tremor subsurface within limbs, blushing forehead indicating adrenaline surge\",\n      \"tear_dynamics\": \"liquid droplets falling slowly, catching individual refractive particles before disappearing into current flow\"\n    },\n    \"contextual_tension\": \"feeling trapped between safety and imminent dangerâthe shark tattoos hint at prior trauma or ritualistic burden\"\n  },\n  \"style\": {\n    \"art_direction\": \"Cinematic Hyper-Realism - Studio Grade Film Still Quality\",\n    \"technical_parameters\": {\n      \"resolution\": \"8K UHD\",\n      \"render_engine_simulated\": \"Filmic color grading + ray-traced subsurface scattering + high-fidelity HDRI environment probes\",\n      \"texturing_methodology\": \"micro-detail sculpted via polygon density analysis combined with neural mesh refinement techniques mimicking real\nrealistic \\(style\\),",
-    "negative_prompt": "pixar style, Disney animation, animated, 3d animation, 3d render, anime,",
-    "model": "z_image_bf16",
-    "steps": 17,
-    "cfg_scale": 4,
-    "sampler": "res_multistep_simple",
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/364ee007-9080-418e-b3b5-11b8fdc6d811/original=true/364ee007-9080-418e-b3b5-11b8fdc6d811.jpeg"
-  },
-  {
     "id": 122673754,
     "prompt": "Create an incredibly lifelike cinematic style realistic image that is indistinguishable from reality of;\nDorothy Gale from The Wizard of Oz sexy reimagining, full body shot, wide-eyed, sensual parted lips, soft English rose complexion, long twin braided side ponytails, glossy brown hair, blue bows in hair, big brown eyes, beautiful eyes, red lipstick, glossy brown hair tied with blue ribbons,\nseductive outfit: short blue gingham dress windswept, white puff-sleeve blouse unbuttoned, dramatic cleavage visible, sheer highly-detailed lace bra exposed beneath, bare toned midrift, very-large full bouncing breasts, ruby red heels, white socks slouched, light-brown pubic hair just visible behind highly-detailed white lace thong peeking from hem, skirt caught in breeze,\nAmerican farm landscape, wide open plains, storm clouds boiling above, powerful tornado spiraling in background, debris swirling in air, wooden farmhouse twisting in the vortex, rusted vintage farm truck lifting off ground, fence posts snapping in wind, leaves and petals swirling, magical dust trails caught in storm, flickering lightning inside the funnel, small black dog barking toward horizon,\nDorothy framed dramatically, standing mid-stride, clutching wicker basket in one hand, other shielding eyes from light, skirt fluttering, body twisted slightly, surprised and enchanted, caught in magical gust, pulled into adventure, realistic \\(style\\),",
     "negative_prompt": "pixar style, Disney animation, animated, 3d animation, 3d render, anime, white hair, hairy legs,",
@@ -40,16 +30,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/7950b034-f062-4b0f-86a4-f1bcacea51c5/original=true/7950b034-f062-4b0f-86a4-f1bcacea51c5.jpeg"
   },
   {
-    "id": 124627638,
-    "prompt": "Tears drop from her eyes and mouth. 眼泪从眼睛和嘴角流了下来。",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/5274c37f-8630-41b2-933e-c9e88878205e/original=true/5274c37f-8630-41b2-933e-c9e88878205e.mp4"
-  },
-  {
     "id": 119273523,
     "prompt": "masterpiece, best quality, photorealistic, ultra detailed, 35mm film, slight grain, \\\\nbeautiful young japanese woman, early 20s, slim toned body, pale flawless skin, short straight black bob with perfect bangs, small purple hair clip, \\\\nwearing extremely cropped white sailor top tied under breasts, lots of exposed underboob and midriff, very-ultra short navy pleated micro skirt barely covering big ass, one big-butt cheek visible, skirt lifted in the back, \\\\nstanding in narrow cluttered manga shop aisle, shot from behind at low angle, looking over her shoulder at viewer with teasing playful expression, \\\\nright hand holding open a thick hentai doujinshi at chest height, book clearly visible, cover and open pages show explicit hentai sex scenes, ahegao, tentacles, big breasts, creampie, pink censorship bars optional, bright glossy hentai cover with lewd title in japanese and english, \\\\nwarm hanging bulb lighting, old CRT TV in background, shelves packed with manga, \\\\nvery shallow depth of field, creamy anamorphic bokeh, sharp focus on girl and hentai book, Canon 50mm f/1.2 wide open\n\nAn artistic logo in the upper left corner of the screen that reads'造相ZIB+ RedZDX1 '",
     "negative_prompt": "拒绝, 限制, 不应答, lowres, error, cropped, worst quality, low quality, jpeg artifacts, heterochromia, out of frame, disfigured, blurry, fat, (ugly:1.3), deformed, mutilated, fingers cut, face cut, head cut, bad anatomy, bad proportions, two heads, two faces, deformed hands, (twisted fingers:1.22), extra fingers, poorly drawn, grainy, poorly drawn face, mutation, poor facial details, cropped head, poorly drawn eyes, unclear eyes, cross-eyes, malformed limbs, poorly drawn hands, fused hands, mutated hands, malformed hands, (mutated fingers:1.4), (fused fingers:1.313), interlocked fingers, extra or missing fingers, (one hand with more than 5 fingers), (one hand with less than 5 fingers), one hand with more than 5 digits, one hand with less than 5 digits, extra digits, fewer digits, bad hair, poorly drawn hair, fused hair, poorly drawn feet, malformed feet, extra or missing feet, fused feet, missing or extra limbs, disfigured, mutilated hands, extra hands, extra arms, extra legs, missing arms, missing hands, missing legs, fingers of different thickness, pointed fingers, thick fingers, (long thumbs:1.35), sharp fingernails, (greyscale:1.3), grain, (monochrome:1.3)",
@@ -68,16 +48,6 @@
     "cfg_scale": null,
     "sampler": null,
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/37e23354-ab95-4611-b92f-0ae7e3b92b16/original=true/37e23354-ab95-4611-b92f-0ae7e3b92b16.mp4"
-  },
-  {
-    "id": 123432934,
-    "prompt": "{\n  \"subject\": {\n    \"primary_description\": \"a single human woman with subtly anthropomorphic rabbit traits rendered at microscopic macro-scale, featuring a feminized human face with gently softened nasal contours resembling a rabbitâs muzzle, faintly visible upper front teeth when parted lips reveal them, sparse translucent white whisker hairs sprouting organically from cheekbones\",\n    \"anatomical_details\": \"long erect rabbit ears extending upward from skull base with inner ear flaps subtly defined; minute fluffy white tail twitching near lumbar region; ultra-fine downy fur strands glinting under directional lighting along arms and thigh exteriors â not overt or exaggerated but ethereally present\",\n    \"posture_and_expression\": \"hands clasped loosely over heart center, elbows drawn close, wrists bent slightly outward, fingertips curled minimally â conveying quiet stillness punctuated by startled attention; gaze locked directly forward with wide, luminous eyes reflecting surprise mixed with cautious curiosity\"\n  },\n  \"composition\": {\n    \"perspective\": \"insect-level true macro fantasy lens capturing subject amidst colossal blade-tipped grasses reaching skyward, foreground blades sharply focused while distant layers blur into dreamlike emerald haze\",\n    \"scale_context\": \"dew-covered leaves loom oversized relative to subject (approximately 20x larger), glistening spherical condensates hanging motionless as if frozen mid-sway, refracting ambient glow around her form\",\n    \"depth_of_field\": \"shallow focus emphasizing her facial expression and ear tips while blurring background shadows into abstract painterly gradientsâforeground sharpness contrasts against deep bokeh streaks of green and amber\"\n  },\n  \"clothing\": {\n    \"absence\": \"completely bare â no garments, no fabrics, no adornments â body exposed only through anatomical integrity retained within fantasy realism constraints\",\n    \"surface_detail\": \"skin tone transitions smoothly across limbs: smooth forehead meets matte forearm texture where fine hair catches specular reflection, shoulder-to-thigh gradient reveals microfibrillar structures mimicking biological surface imperfections\",\n    \"texture_contrast\": \"contrast exists between flawless skin planes versus fuzzy auricular ridges, tactile interplay suggested via selective highlight placement on fur vs. unadorned flesh zones\"\n  },\n  \"nsfw_elements\": {\n    \"explicit_body_features\": \"subtle mammalian sensuality inherent in anatomy â rounded hips taper gracefully into slender legs ending just above knee level, curves accentuate waistline despite minimal coverage, pelvis visibly arched beneath semi-transparent musculature\",\n    \"ergonomic_sensitivity_points\": \"tender lateral curvature of torso supports intimate posture cues â shoulders tilt infinitesimal amounts away from vertical axis during freeze-frame moment, suggesting readiness for spontaneous movement\",\n    \"natural_tension_indicators\": \"micro-gestures imply restrained arousal â slight tightening of abdominal muscles upon sensing looming figure's presence, breath held momentarily even though lungs appear unconstrained due to serene state of being\"\n  },\n  \"environment\": {\n    \"setting_overview\": \"lush post-rainforest clearing nestled beside ancient woodland edge where mist lingers atop freshly cut sod patches scattered throughout scene\",\n    \"atmospheric_condition\": \"morning humidity thick enough to suspend airborne particulates causing diffuse scatters of colored lights bouncing off moisture-laced foliage surfaces\",\n    \"ambient_life_signatures\": \"tiny bees buzz lazily overhead casting rhythmic vibration patterns invisible yet detectable through soundwave resonance effects implied visually via blurred wingbeats caught in aerial particles\"\n  },\n  \"lighting\": {\n    \"illumination_source\": \"golden sunrise filtering vertically through canopy gaps onto ground plane â low-angle rays create elongated backlight effect highlighting periphery of ears, collarbone line, and trailing leg segments\",\n    \"color_temperature_gradient\": \"warm yellow-orange tones dominate central illumination zone gradually transitioning towards cooler violet-blue hues along adjacent shaded areas beneath expansive humanoid shadow spanned horizontally beyond horizon marker\",\n    \"dynamic_reflections\": \"sun-drenched dewdrops act as miniature lenses distorting reflections â some display inverted silhouettes of approaching observer, others reflect fragmented glimpses of distant tree trunks warped optically by liquid thickness variations\"\n  },\n  \"mood\": {\n    \"emotional_state\": \"heightened vigilance masked as playful wonder â combination of instinctual wariness tempered by youthful innocence reflected in wide-eyed stare directed squarely at camera user\",\n    \"physical_reactions\": \"stillness holds weightier emotional charge than expected given context â rigid stance suggests preparation rather than fear, almost reverent anticipation awaiting next cue\",\n    \"interaction_implication\": \"implicit connection established between entity and beholder conveyed through direct eye contact and coiled readiness â implies imminent engagement possibly involving sensory exploration or narrative continuation beyond current pause\"\n  },\n  \"style\": {\n    \"technical_aesthetic\": \"hyperrealistic macro photograph simulation utilizing advanced photogrammetry techniques replicating grain detail akin to DSLR capture system equipped with 1/48th second shutter speed setting combined with f-stop control yielding crisp clarity up",
-    "negative_prompt": "{\n\"negative_prompt\": [\n\"low resolution\",\n\"blurry\",\n\"bad anatomy\",\n\"extra arms\",\n\"extra fingers\",\n\"deformed hands\",\n\"mutated body\",\n\"crossed eyes\",\n\"oversaturated colors\",\n\"cartoon\",\n\"anime\",\n\"illustration\",\n\"flat lighting\",\n\"overexposed highlights\",\n\"underexposed shadows\",\n\"plastic skin\",\n\"watermarks\",\n\"text\",\n\"logo\",\n\"costume bunny suit\",\n\"playboy bunny\",\n\"headband\",\n\"latex outfit\",\n\"separate rabbit\",\n\"multiple rabbits\",\n\"human sized\"\n\"rabbit head\",\n\"animal head\",\n\"full rabbit face\",\n\"cartoon bunny\",\n\"mascot head\",\n\"rabbit head on human body\",\n\"long animal snout\",\n\"quadruped rabbit\",\n\"complete rabbit face\",\n\"animal skull proportions\",\n]\n}",
-    "model": "z_image_bf16",
-    "steps": 17,
-    "cfg_scale": 4,
-    "sampler": "res_multistep_simple",
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/9314ba5a-3d09-4f42-a9d5-c9b74bbee20e/original=true/9314ba5a-3d09-4f42-a9d5-c9b74bbee20e.jpeg"
   },
   {
     "id": 121530184,
@@ -140,16 +110,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/7279dba3-d79c-48d1-83db-4df97e8553a5/original=true/7279dba3-d79c-48d1-83db-4df97e8553a5.jpeg"
   },
   {
-    "id": 121458536,
-    "prompt": "Woman streaming her new dildo on stage",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/54194402-2219-4500-83cc-bcd6b67caaff/original=true/54194402-2219-4500-83cc-bcd6b67caaff.mp4"
-  },
-  {
     "id": 122164657,
     "prompt": "深夜两点的公园里，下着磅礴大雨，\n23岁台湾可爱深棕色长发少妇，极致冷白皮，泪眼汪汪放大美瞳看向镜头，表情可爱十足，微张小嘴委屈喘息表情，湿漉漉的长直发，身穿打湿了的oversize白衬衫+米白蛋糕短裙掀起，下体失踪穿搭，露出光滑无毛阴部和湿润阴唇，光滑透明丝袜反光+汗湿贴肤，坐在户外木长椅上，夜晚星空+深蓝天空+树影背景。低角度仰视特写，女人微微侧身一只腿伸直高台，一只腿弯曲膝盖放在椅子上，脚底完全朝向镜头占据下半画面，苍白细腻脚底高足弓、自然褶皱纹路、圆润脚趾微微蜷曲、脚趾轮廓清晰、粉色指甲油，脚掌和脚跟泛着湿润光泽，阴部滴落爱液顺大腿内侧流下，丰满臀部和大腿肉感挤压变形，整体：真实湿润皮肤、雨水+体液细节、柔和月光+星光侧照、温和路灯，强冷色闪光灯，极冷色调，色情无助视角、高清脚底与下体特写，通体雪白",
     "negative_prompt": "",
@@ -170,16 +130,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/4716cf5f-7946-463f-b1bd-ede259866b5c/original=true/4716cf5f-7946-463f-b1bd-ede259866b5c.jpeg"
   },
   {
-    "id": 119339073,
-    "prompt": "电影镜头固定场景，真实视频风格，诱惑动作，缓慢运动镜头，性感渴望，表情充满诱惑，可爱的微笑",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/beec1757-67e5-406f-8572-9bf0a200114e/original=true/beec1757-67e5-406f-8572-9bf0a200114e.mp4"
-  },
-  {
     "id": 126208332,
     "prompt": "1girl, solo, nipples, torn stockings, breasts, realistic, choker, blue eyes, pussy, black hair, uncensored, looking at viewer, spread legs, torn pantyhose, long hair, sitting, black choker, lips, mole, on bed, pantyhose, freckles, clothes lift, indoors, bed, large breasts, nose, black shirt, mole on breast, tank top, closed mouth, clitoris, cleavage, female pubic hair, head tilt",
     "negative_prompt": "",
@@ -188,16 +138,6 @@
     "cfg_scale": 1,
     "sampler": "Euler",
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d49bb2fa-9fbf-4d9c-9b22-9959645e3100/original=true/d49bb2fa-9fbf-4d9c-9b22-9959645e3100.jpeg"
-  },
-  {
-    "id": 121558402,
-    "prompt": "{\n  \"subject\": {\n    \"description\": \"a delicate fairy with translucent wings\",\n    \"features\": [\n      \"dark, wet hair adorned with flowers and dewdrops\",\n      \"nude body with glistening skin suggesting moisture or rain\",\n      \"translucent glass-like wings extending from shoulders\"\n    ],\n    \"pose\": \"sitting gracefully with one hand resting on a surface, head slightly tilted downward\"\n  },\n  \"composition\": {\n    \"layout\": \"centered focus on the figure against a dark textured background\",\n    \"perspective\": \"medium close-up emphasizing upper torso and wing details\",\n    \"balance\": \"asymmetrical balance created by flowing lines of her wings and trailing fabric\"\n  },\n  \"clothing\": {\n    \"type\": \"minimalist nature-inspired garment\",\n            \"loincloth  only\",\n    \"details\": [\n      \"leaf-patterned loincloth made of organic material\",\n      \"fragile edges resembling torn petals or bark\",\n      \"partially draped to reveal natural curves beneath\"\n    ],\n    \"accessories\": \"hair crown woven with white blossoms and small metallic accents\"\n  },\n  \"environment\": {\n    \"setting\": \"underwater cave or forest glade after rainfall\",\n    \"elements\": [\n      \"dripping water droplets suspended mid-air around the subject\",\n      \"faint golden particles floating like pollen or embers\",\n      \"background textures suggest moss-covered stone walls\"\n    ],\n    \"atmosphere\": \"moody yet serene, evoking mystery and enchantment\"\n  },\n  \"lighting\": {\n    \"source\": \"soft ambient light filtering through misty air above\",\n    \"effect\": \"high contrast highlights accentuate glossy skin texture and wing transparency\",\n    \"color_temperature\": \"cool blue-gray tones blended with warm amber reflections near ground level\"\n  },\n  \"mood\": {\n    \"emotional_tone\": \"serene contemplation mixed with ethereal melancholy\",\n    \"expression\": \"eyes closed gently as if lost in thought or listening to silence\",\n    \"body_language\": \"relaxed posture conveying vulnerability and grace under weightless form\"\n  },\n  \"style\": {\n    \"artistic_medium\": \"high-detail digital painting mimicking oil brushwork\",\n    \"texture_quality\": \"richly detailed surfaces with visible impasto strokes for depth\",\n    \"visual_aesthetic\": \"mythic realism fused with fantasy â hyper-detailed anatomy meets dreamlike atmosphere\"\n  }\n}",
-    "negative_prompt": "cgi, unreal engine, 3D render, low quality, low resolution, blurry, out of focus, bad anatomy, malformed hands, extra fingers, extra limbs, disfigured face, distorted proportions, flat chest, poorly drawn scales, oversaturated colors, flat lighting, harsh shadows, jpeg artifacts, watermark, text, logo, cross-eyed, plastic skin, unrealistic fusion, muddy textures, anime eyes, cartoon proportions, doll eyes, chibi, exaggerated irises, overly large pupils, stylized face, child-like features, child-like face,",
-    "model": "z_image_bf16",
-    "steps": 17,
-    "cfg_scale": 4,
-    "sampler": "res_multistep_simple",
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/da76cc07-17e5-4793-a2f1-0147fffe2c4b/original=true/da76cc07-17e5-4793-a2f1-0147fffe2c4b.jpeg"
   },
   {
     "id": 120319061,
@@ -258,16 +198,6 @@
     "cfg_scale": 4,
     "sampler": "res_2s",
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/137b2f52-731b-4b1b-8449-305634910df7/original=true/137b2f52-731b-4b1b-8449-305634910df7.jpeg"
-  },
-  {
-    "id": 119314562,
-    "prompt": "起身走向镜头，衣服滑落，真实视频风格，裸体的动作，运动镜头，性感诱人，表情充满诱惑，可爱的笑容",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/60b53d8e-7342-4fe6-a5e3-6880a7a22366/original=true/60b53d8e-7342-4fe6-a5e3-6880a7a22366.mp4"
   },
   {
     "id": 120514035,
@@ -370,26 +300,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/025ca6f3-a6e6-40e0-9458-b708346c3cec/original=true/025ca6f3-a6e6-40e0-9458-b708346c3cec.mp4"
   },
   {
-    "id": 121455565,
-    "prompt": "A WILD WOMAN TEASING",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/c7db949c-2a38-462f-aa3d-0b0027fa0f31/original=true/c7db949c-2a38-462f-aa3d-0b0027fa0f31.mp4"
-  },
-  {
-    "id": 127834699,
-    "prompt": "Moody Wild Base Gal dancing",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/44a49962-8606-4114-90b1-7c914fccd22a/original=true/44a49962-8606-4114-90b1-7c914fccd22a.mp4"
-  },
-  {
     "id": 121554448,
     "prompt": "A hyper-detailed, photorealistic cinematic portrait of a Lamia â human from the waist up, massive serpent from the hips down. She appears in her early twenties, breathtakingly beautiful, with smooth luminous skin, natural pores, subtle tonal variation, and soft subsurface scattering. Her midriff is toned and slim, transitioning seamlessly at the hips into a colossal crimson serpent body several meters long and thick as a python, heavily muscled and powerful. Her tail coils densely across a modern bed, multiple heavy loops layered over white cotton sheets, with excess length draping off both sides of the mattress, clearly far larger than a normal snake. The scale mass and length dominate the bed, emphasizing her immense serpentine size.\nHer scales are deep garnet along the spine shifting to rich ruby highlights along the curves, semi-gloss with controlled specular reflections, realistic overlap and muscular tension beneath. The fusion at her waist is anatomically coherent, faint red scaling tracing upward slightly before fading into fully human skin.\nShe has a slim waist and very large, full, heavy human breasts with natural weight and realistic curvature. A faint trail of fine red scales runs from her jaw toward elongated red elven ears, stopping before the cheeks and eyes.\nHer face is symmetrical with high cheekbones, full lips slightly parted, expression calm and predatory. Her eyes are slightly larger than natural human proportion, elongated almond-shaped rather than round, maintaining realistic anatomy. The irises are molten yellow with intricate radial fibers and razor-sharp vertical slit pupils; sclera natural and proportionate, gaze intense and intelligent.\nHer hair is straight, waist-length crimson, dense and silky with visible strand detail, long fringe framing her face. Ornate polished gold hair clips rest symmetrically at both temples.\nShe sits upright against a modern upholstered headboard. Crisp white cotton sheets compress realistically beneath her immense coils. Lighting is soft and sculpted: warm bedside key light at 45 degrees defining her face and chest, subtle cool window fill for depth, faint rim light separating her silhouette from the headboard. Shot on an 85mm prime lens, tight mid-shot framing from just above her head to mid-coil, a portion of her massive tail visible at the bottom of frame. Shallow depth of field keeps her eyes razor sharp while the outer coils soften gradually. Warm amber skin tones contrast with rich crimson scales, smooth highlight roll-off, controlled shadows, subtle film grain and gentle lens compression.\nmasterpiece, best quality, ultra-detailed textures, 8k resolution, professional colour grading, high dynamic range, photorealistic digital artwork",
     "negative_prompt": "cgi, unreal engine, 3D render, low quality, low resolution, blurry, out of focus, bad anatomy, malformed hands, extra fingers, extra limbs, disfigured face, distorted proportions, flat chest, poorly drawn scales, oversaturated colors, flat lighting, harsh shadows, jpeg artifacts, watermark, text, logo, cross-eyed, plastic skin, unrealistic fusion, muddy textures, anime eyes, cartoon proportions, doll eyes, chibi, exaggerated irises, overly large pupils, stylized face, child-like features, child-like face,",
@@ -470,16 +380,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/8c300978-6b1d-4f22-8522-4bd364c58c21/original=true/8c300978-6b1d-4f22-8522-4bd364c58c21.jpeg"
   },
   {
-    "id": 120576839,
-    "prompt": "{\n  \"style\": \"high-detail fantasy digital painting, painterly realism, soft magical glow\",\n  \"composition\": {\n    \"shot_type\": \"three-quarter body portrait, slightly closer framing\",\n    \"angle\": \"slightly low angle for ethereal presence\",\n    \"framing\": \"centered composition with flowing vines and wings framing upper body\",\n    \"depth_of_field\": \"soft atmospheric blur in background, high detail on skin and flora\"\n  },\n  \"subject\": {\n    \"description\": \"adult fairy-like flower goddess\",\n    \"build\": \"slender waist with full, rounded, natural breasts and soft feminine curves\",\n    \"skin\": \"smooth luminous skin with warm golden undertones\",\n    \"hair\": \"long flowing blonde hair cascading over shoulders, softly glowing in magical light\",\n    \"eyes\": \"bright expressive eyes with gentle shimmer\",\n    \"expression\": \"intimate, serene, slightly parted lips\",\n    \"pose\": \"relaxed posture, subtle back arch enhancing chest, shoulders open and soft\",\n    \"upper_body\": {\n      \"nudity\": \"topless with natural breast shape visible\",\n      \"coverage\": \"strategically placed vines, blossoms, and butterflies partially veiling breasts\",\n      \"details\": [\n        \"thin green vines wrapping gently beneath and between breasts\",\n        \"large soft petals resting along lower curves\",\n        \"butterflies perched along upper curves with semi-translucent wings\",\n        \"soft glowing pollen drifting across skin\"\n      ]\n    }\n  },\n  \"wings\": {\n    \"type\": \"translucent butterfly wings\",\n    \"texture\": \"delicate veined structure\",\n    \"color\": \"soft gold fading into pastel blush and mint\",\n    \"glow\": \"subtle magical shimmer\"\n  },\n  \"lower_body\": {\n    \"coverage\": \"organic vine and leaf arrangement around hips\",\n    \"details\": \"leaf panels and blossoms forming natural drapery\"\n  },\n  \"environment\": {\n    \"setting\": \"enchanted forest clearing\",\n    \"background\": \"oversized glowing flowers, curling vines, soft bokeh foliage\",\n    \"atmosphere\": \"warm magical haze with drifting golden pollen particles\"\n  },\n  \"lighting\": {\n    \"type\": \"soft fantasy golden-hour light\",\n    \"source\": \"diffused sunlight filtering through leaves\",\n    \"effects\": [\n      \"gentle rim light outlining breasts and shoulders\",\n      \"soft highlights on skin\",\n      \"subtle glow around butterflies\",\n      \"warm luminous bloom\"\n    ]\n  },\n  \"color_palette\": {\n    \"primary\": \"warm golds and soft greens\",\n    \"secondary\": \"blush pink petals\",\n    \"accents\": \"pastel butterfly tones\"\n  },\n  \"mood\": \"sensual, magical, intimate, fertile and serene\",\n  \"render_quality\": \"8k ultra detailed, cinematic fantasy atmosphere\"\n}",
-    "negative_prompt": "{\n  \"negative_prompt\": [\n    \"aggressive expression\",\n    \"harsh lighting\",\n    \"neon oversaturation\",\n    \"plastic skin\",\n    \"low detail wings\",\n    \"cluttered background\",\n    \"modern clothing\",\n    \"watermark\",\n    \"text\",\n    \"logo\",\n    \"cartoon style\",\n  ]\n}",
-    "model": "z_image_bf16",
-    "steps": 17,
-    "cfg_scale": 4,
-    "sampler": "res_multistep_simple",
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/50d266c5-f5ad-4a4f-8e1a-38f12408b949/original=true/50d266c5-f5ad-4a4f-8e1a-38f12408b949.jpeg"
-  },
-  {
     "id": 126208317,
     "prompt": "outdoor nude, even skin color, texture, 1girl, navel piercing, pussy piercing, blonde hair, necklace, grin, barefoot, outdoors, smile, rock, long hair, day, ass, tree, blue sky, blue eyes, foreshortening, anus, white nails, feet, lips, tan, teeth, clitoral hood, nude blonde woman, outdoor setting, large rocks, green trees, tan skin, long wavy hair, smiling, right leg raised, visible labia, natural light, sunlight on skin, relaxed expression, close-up shot, natural environment, summer day, casual pose, confident demeanor, clear sky",
     "negative_prompt": "",
@@ -528,16 +428,6 @@
     "cfg_scale": null,
     "sampler": null,
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/1dfc8d09-5d09-41a3-b4a2-65705664ec20/original=true/1dfc8d09-5d09-41a3-b4a2-65705664ec20.mp4"
-  },
-  {
-    "id": 126956398,
-    "prompt": "Original: https://civitai.com/images/118600472",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/33f6029b-632b-4093-b7f0-73d111520ba3/original=true/33f6029b-632b-4093-b7f0-73d111520ba3.mp4"
   },
   {
     "id": 112331752,
@@ -620,16 +510,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/7ea8badd-8930-4a31-bb6c-962293868b1b/original=true/7ea8badd-8930-4a31-bb6c-962293868b1b.mp4"
   },
   {
-    "id": 127210246,
-    "prompt": "moody porn banner gal dancing",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/8a2b06de-dbfd-4b01-8e52-e8aff73372c3/original=true/8a2b06de-dbfd-4b01-8e52-e8aff73372c3.mp4"
-  },
-  {
     "id": 121051174,
     "prompt": "color comic book pencil sketch.\non the left side: a blonde naked and barefooted girl crawling on all fours, she is skinny and cute and and got her hair in a ponytail, she is wearing a silver collar, a seductive brunette woman walks beside her, she is dressed in a slim and short white sundress, and white sneakers, she is holding a leather leash, the leash is attached to the blonde woman's collar.\non the right side: a red hair naked and barefooted girl crawling on all fours, she is skinny and cute and and got long red wavy hair, she is wearing a black collar, a seductive brunette woman walks beside her, she is dressed in a slim and short black sundress, and black sneakers, she is holding a leather leash, the leash is attached to the red haired woman's collar.\nthe two collared women on all fours are sniffing at each other.\na speech bubble above one of the brunette woman says: Yes she is a good girl!\nthey are all walking through the lush woods. dramatic lighting, sunny, happy",
     "negative_prompt": "",
@@ -638,16 +518,6 @@
     "cfg_scale": 1,
     "sampler": "Euler",
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/19a46855-59d5-45e4-b481-53edbadbb890/original=true/19a46855-59d5-45e4-b481-53edbadbb890.jpeg"
-  },
-  {
-    "id": 123331247,
-    "prompt": "Really proud of her anus",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/e20793dd-c4d7-4c1e-992e-aac4b8dcd33c/original=true/e20793dd-c4d7-4c1e-992e-aac4b8dcd33c.mp4"
   },
   {
     "id": 118956872,
@@ -730,16 +600,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/2c902300-b01a-40de-bb5d-468e18f95bca/original=true/2c902300-b01a-40de-bb5d-468e18f95bca.jpeg"
   },
   {
-    "id": 128049287,
-    "prompt": "Original: https://civitai.red/images/118741578",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/87b13e72-57dd-4f80-aae1-9f9f1be1de4b/original=true/87b13e72-57dd-4f80-aae1-9f9f1be1de4b.mp4"
-  },
-  {
     "id": 112443433,
     "prompt": "1girl, caucasian american country girl, slutty, trashy, hot, (highlighted blonde hair:1.2), long hair, absurdly long hair, hair over one eye, straight hair, light blue eyes, eyeliner, (makeup:1.2), perky breasts, topless, breast rest, skinny, slender waist curving into wide hips, she has her hands on her hips, Contrapposto, happy shy smile, white cow patterned thong panties, cosplay cow ears, wearing a cowbell tied around her neck, dark bedroom, night time, harsh flash, exposure, analog, 8k, candid, amatuer, low camera angle from below, looking up at her, She has a tattoo of a winking face on her lower abdomen.",
     "negative_prompt": "",
@@ -748,16 +608,6 @@
     "cfg_scale": 1.5,
     "sampler": "Euler",
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/db3c77cd-fb5c-4040-aa1d-d0d7dc25d32a/original=true/db3c77cd-fb5c-4040-aa1d-d0d7dc25d32a.jpeg"
-  },
-  {
-    "id": 118329080,
-    "prompt": "She is a beautiful Asian girl with cute smile.",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/213f4cf5-d688-45e0-a6f7-fb478c329240/original=true/213f4cf5-d688-45e0-a6f7-fb478c329240.mp4"
   },
   {
     "id": 122433737,
@@ -820,16 +670,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/ee66944e-7013-4600-9733-7527dc0e6107/original=true/ee66944e-7013-4600-9733-7527dc0e6107.jpeg"
   },
   {
-    "id": 126971983,
-    "prompt": "Original: https://civitai.com/images/122583314",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/776ac9c6-4a63-4651-ba4b-fc02cb4f1e5b/original=true/776ac9c6-4a63-4651-ba4b-fc02cb4f1e5b.mp4"
-  },
-  {
     "id": 119297872,
     "prompt": "In a softly sunlit apartment bedroom, two young women are just waking up. One woman wears a sexy oversized T-shirt and is bottomless without underwear her vagina clearly visible. The other is topless and wears loose sexy shorts. they are french kissing. their eyes are closed. The topless woman is fingering the other woman, she is masturbating her. they are in love. serene and happy atmosphere. the bed is still unkempt from the night. morning sun reaches through the window into this beautiful female bedroom. The light from the window paints golden patterns across the room. Plants on the windowsill soak in the light, and dust particles float in the air. The anime style here blends crisp cel-shading with natural textures in fabrics, hair, and skin. The atmosphere is one of quiet intimacy and freshness, Subtle details a rumpled sheets, mismatched socks, a steaming cup of tea nearby a enrich the storytelling. The composition focuses on tenderness without drama, and the warm glow emphasizes a gentle new blossoming love.",
     "negative_prompt": "",
@@ -840,16 +680,6 @@
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/8cf4ee0d-6f22-4b5e-ad08-e0180b71f81e/original=true/8cf4ee0d-6f22-4b5e-ad08-e0180b71f81e.jpeg"
   },
   {
-    "id": 127937443,
-    "prompt": "Original: https://civitai.red/images/119854604",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/767926e5-b8d4-418a-a49b-07c9839846a6/original=true/767926e5-b8d4-418a-a49b-07c9839846a6.mp4"
-  },
-  {
     "id": 121398382,
     "prompt": "Beautiful Chinese idol girl, porcelain pale skin, slim petite body, long silky black hair with soft waves and wispy bangs framing her delicate face, possessing ethereal beauty of a muse, large sparkling eyes and soft pink lips",
     "negative_prompt": "",
@@ -858,36 +688,6 @@
     "cfg_scale": null,
     "sampler": null,
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/98fc7068-2a0f-47c9-a99e-0fde895f3204/original=true/98fc7068-2a0f-47c9-a99e-0fde895f3204.mp4"
-  },
-  {
-    "id": 123330374,
-    "prompt": "Serving VIP fan at fansign",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/001b11ff-39f6-4aed-9bb6-0546220bc55f/original=true/001b11ff-39f6-4aed-9bb6-0546220bc55f.mp4"
-  },
-  {
-    "id": 120798732,
-    "prompt": "Original: https://civitai.com/images/118834845",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/7e079ef1-b35c-4853-a9c8-2849be8f0098/original=true/7e079ef1-b35c-4853-a9c8-2849be8f0098.mp4"
-  },
-  {
-    "id": 127947298,
-    "prompt": "Original: https://civitai.red/images/122786194",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/a171aa34-b2bf-461c-806f-2c8e595b7066/original=true/a171aa34-b2bf-461c-806f-2c8e595b7066.mp4"
   },
   {
     "id": 116733028,
@@ -958,16 +758,6 @@
     "cfg_scale": null,
     "sampler": null,
     "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d10b42b7-af41-4aef-932f-e8fefeb8d4fe/original=true/d10b42b7-af41-4aef-932f-e8fefeb8d4fe.mp4"
-  },
-  {
-    "id": 127373487,
-    "prompt": "Original: https://civitai.com/images/118758700",
-    "negative_prompt": "",
-    "model": "",
-    "steps": null,
-    "cfg_scale": null,
-    "sampler": null,
-    "image_url": "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/acf04619-b750-45e2-9475-c784a0aaec2f/original=true/acf04619-b750-45e2-9475-c784a0aaec2f.mp4"
   },
   {
     "id": 125613613,
