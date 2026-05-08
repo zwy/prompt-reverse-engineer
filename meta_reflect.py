@@ -40,9 +40,17 @@ def reflect_and_improve(system_prompt: str, failed_cases: list[dict], version: i
 
 优化要求：
 1. 保持核心指令：严格输出 JSON，包含所有必要字段
-2. 针对失败案例的具体问题，添加约束规则或 few-shot 示例
-3. 如有必要，可加入边界条件说明（如 lora_tags 的提取规则）
-4. 只输出新的 System Prompt 文本，不要有任何解释或前言"""
+2. JSON prompt 的核心价值是「让每个视觉维度独立可控」——
+   修改任意一个字段，其余字段保持不变。字段粒度越细，可控性越高。
+3. 重点检查以下维度是否被精准捕捉并独立分离：
+   - subject（人物场景是否使用了 face/hair/pose/attire 等子字段）
+   - lighting（type/source/details 是否独立填写，未和 mood 混淆）
+   - camera（shot_scale/lens/aperture/angle 是否独立填写）
+   - must_keep / avoid（constraints）是否有效提取了原 prompt 的关键视觉锚点
+4. 如有必要，可加入 few-shot 示例，示例中 subject 使用嵌套对象格式
+5. 明确说明 sd_extras（quality_tags/lora_tags）仅在 SD 流程中填写，
+   通用场景下留 null，不要把它们混入核心字段
+6. 只输出新的 System Prompt 文本，不要有任何解释或前言"""
 
     llm = get_llm()
     return llm.chat(user_prompt=user_prompt)
@@ -69,7 +77,6 @@ def run_reflection_loop(max_versions: int = 5):
         print("平均分已达 0.85，无需继续优化")
         return
 
-    # 找到当前最新版 System Prompt
     version = 0
     while (out_dir / f"system_prompt_v{version + 1}.txt").exists():
         version += 1

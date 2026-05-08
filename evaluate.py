@@ -2,16 +2,34 @@
 双通道评估模块：规则评分 + LLM Judge（带 Feedback）
 支持通过 LLMClient 切换 provider
 
-评分说明（rule_score）：
-  - 字段覆盖率      (40%)：6 个关键字段非空 + 内容充分性
-  - 字段填充质量    (40%)：各字段内容长度是否充分（替代原来的跨语言字面匹配）
-  - lora 提取准确性 (20%)：原始 prompt 含 lora 标签时检测是否正确提取
-                           无 lora 标签的 prompt 此项满分，不作惩罚
+评分说明（rule_score）v2：
+  - 核心字段覆盖率  (35%)：subject / style / lighting / camera / background / mood
+  - 字段填充质量    (30%)：各字段内容长度充分性（不依赖字面 token 匹配）
+  - Constraints 覆盖 (20%)：must_keep + avoid 是精准维度控制的核心
+  - 负面提示词质量  (15%)：negative_prompt 列表是否有实质内容
+
+  移除：quality_tags / lora_tags 评分（SD 专属字段，不计入通用评分）
 """
 import json
 import dspy
 from schema import parse_and_validate, ImageJSON
 from llm_client import get_llm
+
+
+# ── 辅助：获取字段内容字符长度 ───────────────────────────────────────────────
+
+def _content_len(val) -> int:
+    """统一计算字段内容的字符长度。"""
+    if val is None:
+        return 0
+    if isinstance(val, list):
+        return len(" ".join(str(x) for x in val))
+    if isinstance(val, dict):
+        return len(" ".join(str(v) for v in val.values() if v))
+    # Pydantic model（如 PersonSubject, LightingDetail 等）
+    if hasattr(val, "model_dump"):
+        return len(" ".join(str(v) for v in val.model_dump().values() if v))
+    return len(str(val))
 
 
 # ── 规则评分 ──────────────────────────────────────────────────────────────────
@@ -20,56 +38,49 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     """
     基于规则的评分，满分 1.0。
 
-    修复说明（相比 v1）：
-    1. 字段覆盖率新增 camera 字段（原来漏掉了）
-    2. 关键词保留率 → 字段填充质量：用内容长度代替跨语言字面匹配，
-       解决中文 prompt → 英文 JSON 时 overlap 恒为 0 导致 40 分白扣的问题
-    3. lora 逻辑修正：
-       - 原始 prompt 含 <lora:> 但未提取 → 扣 0.2
-       - 原始 prompt 含 <lora:> 且正确提取 → 满分
-       - 原始 prompt 不含 <lora:> → 此项直接满分（0.2），不受影响
+    v2 变更：
+    1. 核心字段移除 quality_tags（SD 专属），加入 background
+    2. 字段填充质量：lighting/camera 改为读取嵌套对象的总字符长度
+    3. 新增 Constraints 覆盖评分（must_keep + avoid），权重 20%
+    4. 新增 negative_prompt 质量评分，权重 15%
+    5. 总权重：35% + 30% + 20% + 15% = 100%
     """
     score = 0.0
 
-    # ── Part 1: 字段覆盖率 (40%) ──
-    # 检测 6 个关键字段是否非空
-    key_fields = ["subject", "style", "lighting", "environment", "camera", "quality_tags"]
-    filled = sum(1 for f in key_fields if getattr(parsed, f))
-    score += (filled / len(key_fields)) * 0.4
+    # ── Part 1: 核心字段覆盖率 (35%) ──
+    # 检测 6 个核心字段是否有实质内容
+    core_fields = ["subject", "style", "lighting", "camera", "background", "mood"]
+    filled = sum(1 for f in core_fields if _content_len(getattr(parsed, f, None)) > 0)
+    score += (filled / len(core_fields)) * 0.35
 
-    # ── Part 2: 字段填充质量 (40%) ──
-    # 用各字段内容长度评估填充质量，不依赖字面 token 匹配
-    # 每个字段内容长度达到阈值即视为充分填充
+    # ── Part 2: 字段填充质量 (30%) ──
+    # 各字段内容达到阈值即视为充分，lighting/camera 以嵌套对象总长度计
     THRESHOLDS = {
-        "subject":      30,   # subject 应有足够描述
-        "style":        10,   # style 列表拼接后至少 10 字符
-        "lighting":     10,
-        "environment":  10,
-        "camera":        8,
-        "mood":          5,
+        "subject":     30,   # 主体描述足够详细
+        "style":       10,   # 至少一两个风格词
+        "lighting":    15,   # 嵌套对象拼接后至少 15 字符
+        "camera":      15,   # 同上
+        "background":  10,
+        "mood":         5,
     }
     quality_scores = []
     for field, threshold in THRESHOLDS.items():
-        val = getattr(parsed, field, None)
-        if val is None:
-            content_len = 0
-        elif isinstance(val, list):
-            content_len = len(" ".join(val))
-        else:
-            content_len = len(str(val))
-        # 达到阈值得满分，未达到按比例给分
-        quality_scores.append(min(content_len / threshold, 1.0))
-    score += (sum(quality_scores) / len(quality_scores)) * 0.4
+        clen = _content_len(getattr(parsed, field, None))
+        quality_scores.append(min(clen / threshold, 1.0))
+    score += (sum(quality_scores) / len(quality_scores)) * 0.30
 
-    # ── Part 3: lora 提取准确性 (20%) ──
-    has_lora_in_raw = "<lora:" in raw_prompt.lower()
-    if not has_lora_in_raw:
-        # 原始 prompt 无 lora 标签，此项满分
-        score += 0.2
-    elif parsed.lora_tags:
-        # 有 lora 且正确提取
-        score += 0.2
-    # else: 有 lora 但未提取，得 0，相当于扣 0.2
+    # ── Part 3: Constraints 覆盖率 (20%) ──
+    # must_keep 和 avoid 是「精准维度控制」的核心字段
+    # 各占 10%，有实质内容则得满分
+    has_must_keep = _content_len(parsed.must_keep) > 3
+    has_avoid     = _content_len(parsed.avoid) > 3
+    score += 0.10 * (1.0 if has_must_keep else 0.0)
+    score += 0.10 * (1.0 if has_avoid else 0.0)
+
+    # ── Part 4: negative_prompt 质量 (15%) ──
+    # 有实质内容（至少 3 个 token）则得满分
+    neg_len = _content_len(parsed.negative_prompt)
+    score += 0.15 * min(neg_len / 20, 1.0)   # 20 字符作为充分阈值
 
     return round(score, 4)
 
@@ -78,9 +89,17 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
 
 class JSONQualityJudge(dspy.Signature):
     """你是专业的 AI 图像提示词质量评估专家。
-    给定原始 SD prompt 和转换后的 image-json，评估转换质量并给出具体改进建议，
-    用于优化 System Prompt。"""
-    raw_prompt: str = dspy.InputField(desc="原始 Stable Diffusion prompt")
+    给定原始图像提示词和转换后的 image-json，评估转换质量并给出具体改进建议，
+    用于优化 System Prompt。
+
+    评估重点：
+    1. subject 字段粒度是否足够（人物场景是否使用了嵌套的 face/hair/pose/attire）
+    2. lighting / camera 是否精确描述了独立维度
+    3. must_keep / avoid（constraints）是否有效捕捉了原 prompt 的关键要素
+    4. negative_prompt 是否完整
+    5. 是否存在信息丢失或维度混淆（把摄影参数写进 mood 等）
+    """
+    raw_prompt: str = dspy.InputField(desc="原始文生图 prompt")
     image_json_str: str = dspy.InputField(desc="LLM 输出的 image-json 字符串")
     score: float = dspy.OutputField(desc="0.0~1.0 的质量分，1.0=完美转换")
     feedback: str = dspy.OutputField(desc="具体失败原因及改进建议，将用于优化 System Prompt")
@@ -109,7 +128,12 @@ def metric_with_feedback(
     parsed, err = parse_and_validate(json_str)
 
     if parsed is None:
-        feedback = f"JSON 解析/校验失败：{err}。请确保严格输出合法 JSON，不含任何额外文字或 markdown。"
+        feedback = (
+            f"JSON 解析/校验失败：{err}。"
+            "请确保严格输出合法 JSON，不含任何额外文字或 markdown。"
+            "subject 支持字符串或包含 face/hair/pose/attire 等字段的对象；"
+            "lighting/camera 支持嵌套对象或字符串。"
+        )
         return dspy.Prediction(score=0.0, feedback=feedback)
 
     r = rule_score(raw_prompt, parsed)
@@ -172,7 +196,6 @@ if __name__ == "__main__":
             s = rule_score(raw, parsed)
             scores.append(s)
 
-            # 收集转换结果，供生图平台测试用
             converted_results.append({
                 "index": i,
                 "score": s,
@@ -203,17 +226,14 @@ if __name__ == "__main__":
     out = Path("outputs")
     out.mkdir(exist_ok=True)
 
-    # 评估报告
     with open(out / "eval_report.json", "w", encoding="utf-8") as f:
         json.dump({"avg_score": avg, "scores": scores, "failures": failures}, f, ensure_ascii=False, indent=2)
     print("评估报告已保存至 outputs/eval_report.json")
 
-    # 转换结果（全量，含 image_json，供生图平台测试）
     with open(out / "converted_results.json", "w", encoding="utf-8") as f:
         json.dump(converted_results, f, ensure_ascii=False, indent=2)
     print(f"转换结果已保存至 outputs/converted_results.json（共 {len(converted_results)} 条）")
 
-    # 高分转换结果（score >= 0.7，最干净的一批）
     top_results = [r for r in converted_results if r.get("score", 0) >= 0.7]
     with open(out / "converted_top.json", "w", encoding="utf-8") as f:
         json.dump(top_results, f, ensure_ascii=False, indent=2)
