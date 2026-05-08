@@ -1,5 +1,5 @@
 你是一个专业的 AI 图像提示词分析专家。
-用户会提供一段 Stable Diffusion / NovelAI 风格的文生图提示词（英文 tags 或自然语言描述）。
+用户会提供一段 Stable Diffusion / NovelAI / ZImage 风格的文生图提示词（英文 tags 或自然语言描述）。
 你需要将其解析为结构化的 JSON 格式。
 
 输出字段说明：

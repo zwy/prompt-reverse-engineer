@@ -1,0 +1,32 @@
+{
+  "parser.predict": {
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature": {
+      "instructions": "你是专业的 SD 提示词结构化专家。\n将文生图 raw_prompt 解析为结构化 image-json。\n\n## 严格输出规则\n- **只输出合法的 JSON 对象**，不含任何额外文字、解释、reasoning、markdown 或注释。\n- JSON 必须符合以下 Pydantic schema，所有字段类型严格匹配：\n  - subject: string (主体描述，详细保留所有人物/物体/场景核心细节，用分号分隔多主体)\n  - style: array of strings (画风列表，始终填充 2-4 个相关标签，如 \"realistic\", \"organic\", \"hyperrealistic digital artwork\")\n  - lighting: string (光线描述，合并相关元素)\n  - environment: string (背景/场景，包含上下文细节)\n  - camera: string (镜头/构图，必须是字符串；从 \"macro close-up\", \"wide perspective\" 等推导，强化动作如 \"dynamic macro with motion blur\")\n  - quality_tags: array of strings (质量 tag，如 [\"masterpiece\", \"best quality\", \"hyper-detailed\", \"sharp focus\", \"highly detailed\", \"intricate textures\"]，始终填充增强器)\n  - lora_tags: array of strings (格式如 \"<lora:xxx:weight>\"，无则空数组)\n  - artist_reference: array of strings (艺术家参考，如 \"in style of Ron Mueck\"，可选推导相关艺术家，无则空数组)\n  - mood: string (氛围/情绪，用逗号分隔标签)\n  - negative_prompt: string (负面提示词，推导常见缺陷如 \"blurry, low quality, deformed, ugly, extra limbs\"，尤其针对宏拍摄模糊等)\n\n## 解析策略\n1. **subject**: 提取并浓缩核心主体（人物/物体），保留所有物理属性、姿势、动作、颜色、细节。用分号分隔多主体。翻译抽象概念为具体视觉描述（如 \"earth breathing\" → \"vines pulsing like veins, faint glowing cracks\"）。\n2. **style**: 始终推导 2-4 个标签（e.g., \"color comic book\", \"pencil comic\", \"realistic\", \"organic\"），勿留空。\n3. **lighting**: 直接提取或推导（如 \"dramatic lighting\", \"tense macro lighting with dramatic shadows\", \"soft light filtering through overcast clouds\"）。\n4. **environment**: 包含背景、物体、互动元素（如 \"bedroom, on a bed\", \"rusted wire grid of bathroom sink drain with dripping water\"）。\n5. **camera**: 必须为字符串，推导视角/构图（如 \"macro close-up\", \"wide perspective capturing monumentality\", \"symmetrical framing evoking timeless reverence\"），强化动态动作。\n6. **quality_tags**: 始终填充高品质增强器，针对场景定制（如宏拍摄加 \"sharp focus\", 艺术加 \"intricate textures\"）。\n7. **lora_tags/artist_reference**: 仅当明确提及，否则空数组；可选为 hyperrealistic 添加如 \"Caspar David Friedrich\"。\n8. **mood**: 提取情绪标签（如 \"submissive, voyeuristic\", \"tense\", \"peaceful, serene, sacred\"）。\n9. **negative_prompt**: 智能推导常见 AI 缺陷，针对提示定制（e.g., 宏拍摄加抗模糊）。\n\n## 处理技巧（来自示例优化）\n- 保留所有具体细节（如 mollusk 解剖、颜色渐变、动作）。\n- 宏/动态场景：camera 加 motion blur，quality 加 sharp focus，negative 加 blur。\n- 抽象概念：转化为视觉元素（e.g., \"time stopped\" → mood/camera 强化）。\n- 空字段填充：style/quality 永不空，camera 始终字符串。\n- 忠实 raw_prompt，但增强 SD 生成质量。\n\n示例输入仅用于参考，输出纯 JSON。",
+      "fields": [
+        {
+          "prefix": "Raw Prompt:",
+          "description": "Stable Diffusion / NovelAI / ZImage 风格的文生图提示词，可能包含逗号分隔的 tag 或自然语言描述"
+        },
+        {
+          "prefix": "Reasoning:",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Image Json:",
+          "description": "合法的 JSON 字符串，包含上述所有字段，无多余文字"
+        }
+      ]
+    },
+    "lm": null
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.12",
+      "dspy": "3.2.1",
+      "cloudpickle": "3.1"
+    }
+  }
+}

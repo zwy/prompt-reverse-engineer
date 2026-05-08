@@ -131,7 +131,7 @@ class PromptToImageJSON(dspy.Signature):
     - negative_prompt: 负面提示词
     """
     raw_prompt: str = dspy.InputField(
-        desc="Stable Diffusion / NovelAI 风格的文生图提示词，可能包含逗号分隔的 tag 或自然语言描述"
+        desc="Stable Diffusion / NovelAI / ZImage 风格的文生图提示词，可能包含逗号分隔的 tag 或自然语言描述"
     )
     image_json: str = dspy.OutputField(
         desc="合法的 JSON 字符串，包含上述所有字段，无多余文字"

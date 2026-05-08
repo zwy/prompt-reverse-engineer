@@ -1,0 +1,372 @@
+{
+  "avg_score": 0.6058865,
+  "scores": [
+    0.6197,
+    0.6341,
+    0.7033,
+    0.64,
+    0.3467,
+    0.7015,
+    0.59,
+    0.6669,
+    0.6041,
+    0.7111,
+    0.5744,
+    0.6479,
+    0.5333,
+    0.7033,
+    0.56,
+    0.6,
+    0.48,
+    0.16,
+    0.64,
+    0.6087,
+    0.62,
+    0.712,
+    0.787,
+    0.7569,
+    0.7028,
+    0.6635,
+    0.16,
+    0.576,
+    0.59,
+    0.5247,
+    0.64,
+    0.6867,
+    0.623,
+    0.6602,
+    0.5704,
+    0.4,
+    0.5768,
+    0.48,
+    0.48,
+    0.6942,
+    0.6266,
+    0.6313,
+    0.6811,
+    0.7385,
+    0.6596,
+    0.56,
+    0.5676,
+    0.5886,
+    0.6119,
+    0.56,
+    0.56,
+    0.6547,
+    0.6182,
+    0.0,
+    0.5268,
+    0.8182,
+    0.7833,
+    0.48,
+    0.7147,
+    0.6411,
+    0.601,
+    0.6013,
+    0.48,
+    0.6361,
+    0.3467,
+    0.7619,
+    0.6854,
+    0.6533,
+    0.6302,
+    0.45,
+    0.6844,
+    0.7811,
+    0.6909,
+    0.0,
+    0.7642,
+    0.4133,
+    0.825,
+    0.75,
+    0.4067,
+    0.8589,
+    0.0,
+    0.7702,
+    0.0,
+    0.5798,
+    0.0,
+    0.48,
+    0.64,
+    0.0,
+    0.0,
+    0.6124,
+    0.6667,
+    0.6604,
+    0.7192,
+    0.5985,
+    0.4661,
+    0.7026,
+    0.0,
+    0.7559,
+    0.9514,
+    0.32,
+    0.7453,
+    0.5161,
+    0.7803,
+    0.6,
+    0.5621,
+    0.447,
+    0.6,
+    0.6486,
+    0.5506,
+    0.5055,
+    0.5761,
+    0.722,
+    0.5442,
+    0.4612,
+    0.6052,
+    0.5295,
+    0.4873,
+    0.6335,
+    0.6392,
+    0.7487,
+    0.6438,
+    0.6951,
+    0.7904,
+    0.6349,
+    0.8381,
+    0.547,
+    0.5346,
+    0.5298,
+    0.5867,
+    0.5793,
+    0.6811,
+    0.5785,
+    0.6921,
+    0.5029,
+    0.5694,
+    0.6194,
+    0.0,
+    0.5689,
+    0.6675,
+    0.7937,
+    0.7548,
+    0.6036,
+    0.6946,
+    0.6277,
+    0.6618,
+    0.7579,
+    0.6968,
+    0.621,
+    0.4582,
+    0.5555,
+    0.6546,
+    0.7476,
+    0.8526,
+    0.7646,
+    0.6444,
+    0.6067,
+    0.6098,
+    0.6596,
+    0.6008,
+    0.7673,
+    0.5473,
+    0.9525,
+    0.6074,
+    0.54,
+    0.6791,
+    0.8261,
+    0.7843,
+    0.9487,
+    0.7755,
+    0.7077,
+    0.5285,
+    0.4227,
+    0.6426,
+    0.748,
+    0.7406,
+    0.5375,
+    0.6519,
+    0.6836,
+    0.7889,
+    0.4697,
+    0.4904,
+    0.7616,
+    0.5257,
+    0.5508,
+    0.8887,
+    0.656,
+    0.6904,
+    0.5019,
+    0.9123,
+    0.33,
+    0.6522,
+    0.7729,
+    0.82,
+    0.72,
+    0.9758,
+    0.6729,
+    0.6762,
+    0.8781,
+    0.6311,
+    0.5972
+  ],
+  "failures": [
+    {
+      "raw_prompt": "Tears drop from her eyes and mouth. 眼泪从眼睛和嘴角流了下来。",
+      "output": "{\"subject\":\"a girl with tears dropping from her eyes and mouth, crying intensely\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"sad, emotional, tearful\",\"negative_prompt\":null}",
+      "error": "低分: 0.3467"
+    },
+    {
+      "raw_prompt": "anal sex, bridge position, squatting cowgirl position, 1girl, penis, nipples, medium breasts, 1boy, pussy, black thighhighs, blonde hair, navel, clothed male nude female, lace-trimmed legwear, closed eyes, spread legs, bottomless, girl on top, male pubic hair, long hair, erection, arm support, lace trim, mole, smile, mole on thigh, grin",
+      "output": "{\"subject\":\"1girl, 1boy, anal sex, bridge position, squatting cowgirl position, penis, nipples, medium breasts, pussy, black thighhighs, blonde hair, navel, clothed male nude female, lace-trimmed legwear, closed eyes, spread legs, bottomless, girl on top, male pubic hair, long hair, erection, arm support, lace trim, mole, smile, mole on thigh, grin\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.48"
+    },
+    {
+      "raw_prompt": "电影镜头固定场景，真实视频风格，诱惑动作，缓慢运动镜头，性感渴望，表情充满诱惑，可爱的微笑",
+      "output": "{\"subject\":\"seductive pose, slow motion, sexy longing, seductive expression, cute smile\",\"style\":[\"realistic video style\",\"cinematic\"],\"lighting\":null,\"environment\":null,\"camera\":\"fixed scene shot, movie lens, slow motion lens\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"seductive, tempting\",\"negative_prompt\":null}",
+      "error": "低分: 0.16"
+    },
+    {
+      "raw_prompt": "起身走向镜头，衣服滑落，真实视频风格，裸体的动作，运动镜头，性感诱人，表情充满诱惑，可爱的笑容",
+      "output": "{\"subject\":\"a woman standing up and walking towards the camera, clothes slipping off, nude body, sexy and alluring pose, seductive expression with cute smile\",\"style\":[\"realistic video style\",\"motion blur\"],\"lighting\":null,\"environment\":null,\"camera\":\"dynamic motion shot, walking towards viewer\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"seductive, alluring\",\"negative_prompt\":null}",
+      "error": "低分: 0.16"
+    },
+    {
+      "raw_prompt": "韩风冷色调网红美白滤镜，极致冷白皮，overexposure，唇釉带着光泽，通体雪白，细腻毛孔与真实绒毛清晰可见，韩式网红妆容。\n\n\n一个二十岁左右的中国年轻女子，真实照片风格，皮肤细腻光滑带有自然柔和光泽。她拥有黑色短直发，发型齐肩整齐，刘海自然垂落在额前。五官精致，带着圆框眼镜，清纯可爱。她完全赤裸坐在灰色布艺沙发上，双腿大幅度分开并弯曲，膝盖朝向两侧，大腿内侧皮肤紧绷，脚掌自然踩在沙发坐垫上，脚趾清晰可见，脚趾甲干净自然。她穿着白色不透明连裤丝袜，丝袜材质薄透有轻微光泽，袜口有细窄白色蕾丝边，紧紧包裹大腿和小腿。她的左手和右手紧紧抱住一只蓝色大鲨鱼毛绒玩具，玩具头部白色、身体蓝色，嘴巴张开露出粉色内里和白色牙齿，双手手指自然按压在玩具身上。左肩上方有一个黑色小铲子形状的纹身。她阴部完全暴露，阴唇自然闭合，阴部上方有少量自然阴毛。画面构图以女子为绝对主体，占据画面中心位置，前景是分开的大腿、白色丝袜脚部和阴部细节，中景是抱紧的鲨鱼玩具和上身，背景是浅色墙面、右侧白色格子架上摆满各种灰色毛绒玩具，空间关系清晰，视觉引导从下体向上延伸至上身和玩具。光影设计为柔和的室内自然光，从前方偏左方向照射而来，光线柔和均匀，在女子皮肤、白色丝袜和鲨鱼玩具上形成自然高光，同时在身体右侧产生柔和阴影，整体画面呈现专业生活写真摄影质感，细节锐利，肤质、丝袜纹理、毛绒玩具表面和沙发布料真实可辨，色调干净自然，焦点精准集中在人物身体与玩具上。",
+      "output": "{\"subject\":\"Korean cold tone influencer whitening filter, extreme cold white skin, overexposure, glossy lip glaze, pure snow white body, fine pores and realistic fuzz visible, Korean influencer makeup. A 20-year-old Chinese young woman, realistic photo style, delicate smooth skin with natural soft glow. Black short straight hair, shoulder-length neat, natural bangs falling on forehead. Delicate features, round frame glasses, pure cute. Completely nude sitting on gray fabric sofa, legs widely spread and bent, knees facing sides, inner thighs taut, soles naturally on sofa cushion, toes visible, toenails clean natural. Wearing white opaque pantyhose, thin translucent material with slight sheen, narrow white lace trim at thigh top, tightly wrapping thighs and calves. Left and right hands tightly hugging a large blue shark plush toy, toy head white body blue, mouth open showing pink interior and white teeth, fingers naturally pressing on toy. Small black shovel-shaped tattoo on left shoulder above. Genitals fully exposed, labia naturally closed, sparse natural pubic hair above. Left shoulder tattoo.\",\"style\":[\"realistic photo\",\"professional lifestyle portrait photography\"],\"lighting\":\"soft indoor natural light from front-left, even soft light, natural highlights on skin white pantyhose and shark toy, soft shadows on right side\",\"environment\":\"shallow color wall background, right side white grid shelf filled with various gray plush toys, gray fabric sofa\",\"camera\":\"composition with woman as absolute center subject, foreground spread thighs white pantyhose feet and genital details, midground hugging shark toy and upper body, clear spatial relations, visual guide from lower body upward to upper body and toy, sharp details, precise focus on body and toy\",\"quality_tags\":[\"masterpiece\",\"best quality\",\"ultra-detailed\",\"sharp details\",\"realistic skin texture\",\"pantyhose texture\",\"plush toy surface\",\"sofa fabric\"],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"clean natural tone, pure cute\",\"negative_prompt\":null}",
+      "error": "低分: 0.4"
+    },
+    {
+      "raw_prompt": "A WILD WOMAN TEASING",
+      "output": "{\"subject\":\"a wild woman teasing\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.48"
+    },
+    {
+      "raw_prompt": "Moody Wild Base Gal dancing",
+      "output": "{\n  \"subject\": \"Moody Wild Base Gal dancing\",\n  \"style\": [],\n  \"lighting\": null,\n  \"environment\": null,\n  \"camera\": null,\n  \"quality_tags\": [],\n  \"lora_tags\": [],\n  \"artist_reference\": [],\n  \"mood\": \"moody\",\n  \"negative_prompt\": null\n}",
+      "error": "低分: 0.48"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.com/images/118600472",
+      "output": "{\"subject\":\"\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "A mirror selfie perspective in a high-tech, minimalist bathroom. A woman with blonde hair is leaning close to a smart mirror, applying heavy red lipstick. The mirror surface has augmented reality overlays projecting text next to her reflection: \"CURRENT SLUTTINESS LEVEL: 78% (WARNING: BENEFITS AT RISK).\" below another line of text says \"RECOMMENDATION: TAKE OFF TOP.\" She is wearing a very revealing, strappy black cutout bodysuit and thigh-high boots. Her expression is focused and slightly stressed.",
+      "output": "{\"subject\":\"woman with blonde hair, leaning close to smart mirror, applying heavy red lipstick, wearing very revealing strappy black cutout bodysuit and thigh-high boots, focused and slightly stressed expression\",\"style\":[],\"lighting\":null,\"environment\":\"mirror selfie perspective in a high-tech minimalist bathroom, mirror surface with augmented reality overlays projecting text: \\\"CURRENT SLUTTINESS LEVEL: 78% (WARNING: BENEFITS AT RISK).\\\" and \\\"RECOMMENDATION: TAKE OFF TOP.\\\"\",\"camera\":\"mirror selfie perspective\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"slightly stressed\",\"negative_prompt\":null}",
+      "error": "低分: 0.48"
+    },
+    {
+      "raw_prompt": "moody porn banner gal dancing",
+      "output": "{\"subject\":\"moody porn banner gal dancing\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"moody\",\"negative_prompt\":null}",
+      "error": "低分: 0.48"
+    },
+    {
+      "raw_prompt": "Really proud of her anus",
+      "output": "{\"subject\":\"woman proud of her anus, smiling confidently, explicit view of anus\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"proud, confident\",\"negative_prompt\":null}",
+      "error": "低分: 0.3467"
+    },
+    {
+      "raw_prompt": "moody photography. 韩风冷色调网红美白滤镜，极致冷白皮，overexposure，唇釉带着光泽，通体雪白，细腻毛孔与真实绒毛清晰可见，韩式网红妆容。Looking at viewer.\n\n超低角度仰拍捕捉了这位黑发 21 岁韩国少女霸道的全身姿态，她拥有韩国女明星那张令人惊艳的面孔，此刻正以充满反抗与冷冽的酷劲俯视着镜头，双马尾在空中微微扬起，彰显着她不可一世的威严。她身着一套极具性感的时尚装束，丰满的胸部随着呼吸微微起伏，在光影下显得格外耀眼，唇上涂抹着闪耀的亮彩唇妆，与白皙如瓷的肌肤形成鲜明对比，更衬托出她修长的双腿和脚下那双极具攻击性的高跟鞋。画面中，她的一只高跟鞋正毫不留情地踩在一名跪地男子的头颅之上，这种极具压迫感的互动场景充满了暴力美学与权力 dynamics，背景中的景观在前景虚化的作用下被柔和地剥离，仅留下朦胧的色彩晕染，从而将观众的视线牢牢锁定在她那张冷峻而性感的脸上。强烈的环境光从侧后方打来，勾勒出她身型优美的轮廓与肌肉线条，营造出一种既超脱又极具张力的氛围，整张照片在 4K 超高清的质感下，完美融合了叛逆、冷酷与极致的美感，展现出一种令人屏息的视觉冲击力。",
+      "output": "{\"subject\":\"moody photography, Korean style cold tone influencer whitening filter, extreme cold white skin, overexposure, glossy lip glaze, pure snow white body, fine pores and realistic peach fuzz clearly visible, Korean influencer makeup, looking at viewer, ultra low angle low shot capturing a domineering full body pose of a 21-year-old Korean girl with black hair, stunning Korean female star face, looking down at viewer with rebellious and cold fierce vibe, twin tails slightly raised in air showing arrogant dignity, wearing extremely sexy fashionable outfit, full breasts heaving with breath, glossy bright lip makeup contrasting porcelain white skin, long legs, aggressive high heels, one high heel mercilessly stepping on the head of a kneeling man, oppressive interaction scene full of violent aesthetics and power dynamics\",\"style\":[\"photography\",\"Korean style\",\"realistic\"],\"lighting\":\"strong environmental light from side rear, rim lighting outlining beautiful body silhouette and muscle lines\",\"environment\":\"blurred background landscape with soft color bokeh\",\"camera\":\"ultra low angle仰拍, full body, foreground bokeh\",\"quality_tags\":[\"4K ultra high definition\",\"ultra-detailed\"],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"moody, rebellious, cold, cool, tense, detached, violent aesthetics, power dynamics\",\"negative_prompt\":null}",
+      "error": "低分: 0.45"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.red/images/118741578",
+      "output": "{\"subject\":\"\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "She is a beautiful Asian girl with cute smile.",
+      "output": "{\"subject\":\"beautiful Asian girl with cute smile\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.4133"
+    },
+    {
+      "raw_prompt": "a girl naked on her bed, with text writtn on her body with markerï¼\"masterpiece\"ã\"best quality\"ã\"absurdres\"ã\"very aesthetic\"ã\"ultra detailed\"ã\"HDR\"ã\"score_7_up\"ã\"unfinished\"ã\"censored\"ã\"bad anatomy\"ã\"worst quality\"ï¼",
+      "output": "{\"subject\":\"a girl naked on her bed, with text written on her body with marker: \\\"masterpiece\\\", \\\"best quality\\\", \\\"absurdres\\\", \\\"very aesthetic\\\", \\\"ultra detailed\\\", \\\"HDR\\\", \\\"score_7_up\\\", \\\"unfinished\\\", \\\"censored\\\", \\\"bad anatomy\\\", \\\"worst quality\\\"\",\"style\":[],\"lighting\":null,\"environment\":\"bed\",\"camera\":null,\"quality_tags\":[\"masterpiece\",\"best quality\",\"absurdres\",\"very aesthetic\",\"ultra detailed\",\"HDR\",\"score_7_up\"],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.4067"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.com/images/126671360 -> Klein 9b -> Wan2.2 I2V",
+      "output": "{\"subject\": null, \"style\": [], \"lighting\": null, \"environment\": null, \"camera\": null, \"quality_tags\": [], \"lora_tags\": [], \"artist_reference\": [], \"mood\": null, \"negative_prompt\": null}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.12/v/string_type"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.com/images/122583314",
+      "output": "{\"subject\":\"\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.red/images/119854604",
+      "output": "{\n  \"subject\": \"\",\n  \"style\": [],\n  \"lighting\": null,\n  \"environment\": null,\n  \"camera\": null,\n  \"quality_tags\": [],\n  \"lora_tags\": [],\n  \"artist_reference\": [],\n  \"mood\": null,\n  \"negative_prompt\": null\n}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "Beautiful Chinese idol girl, porcelain pale skin, slim petite body, long silky black hair with soft waves and wispy bangs framing her delicate face, possessing ethereal beauty of a muse, large sparkling eyes and soft pink lips",
+      "output": "{\"subject\":\"Beautiful Chinese idol girl, porcelain pale skin, slim petite body, long silky black hair with soft waves and wispy bangs framing her delicate face, possessing ethereal beauty of a muse, large sparkling eyes and soft pink lips\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.48"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.com/images/118834845",
+      "output": "{\n  \"subject\": \"\",\n  \"style\": [],\n  \"lighting\": null,\n  \"environment\": null,\n  \"camera\": null,\n  \"quality_tags\": [],\n  \"lora_tags\": [],\n  \"artist_reference\": [],\n  \"mood\": null,\n  \"negative_prompt\": null\n}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.red/images/122786194",
+      "output": "{\"subject\":\"\",\"style\":[],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "realistic handheld POV camera looking at a gorgeous woman sitting at a lunch table in a college cafeteria. she rests her head on her hand and she looks at the camera and in a feminine voice with an annoyed tone says \"you know I can see you staring at my tits, right?\". she stares at the camera for a couple seconds. Then in an annoyed tone she says \"here, have a better look.\" as she grabs the lapels of her shirt and opens her shirt up slightly, displaying her huge jiggly breasts in a black bra to the camera, she softly jiggles her breasts for the camera",
+      "output": "{\"subject\":\"gorgeous woman sitting at a lunch table, resting head on hand, looking at camera with annoyed expression, huge jiggly breasts in black bra, grabs lapels of shirt and opens shirt slightly displaying breasts, softly jiggles breasts\",\"style\":[\"realistic\"],\"lighting\":null,\"environment\":\"college cafeteria, lunch table\",\"camera\":\"handheld POV camera\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"annoyed, feminine\",\"negative_prompt\":null}",
+      "error": "低分: 0.4661"
+    },
+    {
+      "raw_prompt": "Original: https://civitai.com/images/118758700",
+      "output": "{\n  \"subject\": \"\",\n  \"style\": [],\n  \"lighting\": null,\n  \"environment\": null,\n  \"camera\": null,\n  \"quality_tags\": [],\n  \"lora_tags\": [],\n  \"artist_reference\": [],\n  \"mood\": null,\n  \"negative_prompt\": null\n}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "<Character>一个中国女人，25岁，凌乱中短发，长相甜美。身高172厘米，超模身材，胸部硕大</Character>\n<Clothes>上身着竞速赛车风露脐外套，下身裸体，双脚带及膝长靴。上身赛车服拉链拉开，袒胸露乳。</Clothes>\n<Pose>她以放松的姿势靠在摩托车侧面，微侧身，单脚踩在踏板上。一只手置于车头的方向杆上，另一边将头盔夹在腋下。她略抬下巴，以挑衅的目光看向镜头，微风吹起她的秀发。</Pose>\n<Scene>场景在沥青马路上，室外，上方是立交桥，后方有驶过的小客车，远处有城市远景。</Scene>\n<Style>社交媒体照片。斜角镜头，色调平衡，氛围诱惑，光照凸显人物身材。</Style>",
+      "output": "{\"subject\":\"a 25-year-old Chinese woman, sweet face, messy medium-short hair, height 172cm, supermodel figure, huge breasts, wearing racing crop jacket with zipper open exposing breasts, bottomless, knee-high boots, relaxed pose leaning against motorcycle side, slightly turned body, one foot on pedal, one hand on handlebar, helmet tucked under armpit, chin slightly raised, provocative gaze at viewer, hair blowing in wind\",\"style\":[\"social media photo\"],\"lighting\":\"lighting highlights body figure\",\"environment\":\"asphalt road, outdoor, overpass above, cars passing in background, distant cityscape\",\"camera\":\"low angle shot\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"seductive\",\"negative_prompt\":null}",
+      "error": "低分: 0.32"
+    },
+    {
+      "raw_prompt": "A low-angle shot captures a sleek, tawny tabby cat mid-stride across a sun-dappled wooden floor, its body angled slightly left as it carries a small, weathered cardboard sign in its mouth â the word âBasedâ printed in bold black letters, slightly smudged at the edges from handling. The light streams through a high window behind, casting long diagonal shadows that stretch toward the viewer and frame the catâs silhouette against a blurred background of stacked books and a half-open door. Dust motes dance in the beams, catching highlights as they drift past the catâs fur, which glows with warm amber tones under the directional glow. Its tail curls low behind, barely visible but taut with motion, while its ears are pricked forward, focused on something unseen just beyond the frame. The sign tilts slightly downward, held loosely between its teeth, as if itâs been carried for some time â a quiet burden in this still moment of cinematic pause. Behind it, a dark armchair sits empty, draped with a rumpled wool blanket, and a single bare bulb hangs overhead, casting soft vignette shadows that deepen the mood. The shallow depth-of-field renders the background hazy, blurring the edges of furniture while keeping the catâs eyes â sharp, intelligent, slightly narrowed â in crisp focus, drawing you into its determined gaze as it moves toward the viewer with quiet purpose.",
+      "output": "{\"subject\":\"sleek tawny tabby cat mid-stride across sun-dappled wooden floor, body angled slightly left, carrying small weathered cardboard sign in mouth with â Basedâ in bold black smudged letters, tail curls low taut with motion, ears pricked forward, sharp intelligent slightly narrowed eyes in crisp focus, determined gaze\",\"style\":[],\"lighting\":\"sunlight streams through high window behind, casting long diagonal shadows, dust motes in beams, warm amber tones on fur, soft vignette shadows from bare bulb overhead\",\"environment\":\"blurred background of stacked books, half-open door, dark empty armchair with rumpled wool blanket\",\"camera\":\"low-angle shot, shallow depth-of-field\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"cinematic pause, quiet purpose, still moment\",\"negative_prompt\":null}",
+      "error": "低分: 0.447"
+    },
+    {
+      "raw_prompt": "The light is diffused, filtering through an unseen canopy, illuminating a face poised between human and feline. Warm tones dominates ochre, gold, and umber mottled across the skin with darker spots like a leopard's coat. The eyes are narrow slits of amber, reflecting the ambient glow with unnerving intensity. Whiskers, fine and white, fan outward from the muzzle. A slight furrow creases the brow above the intense gaze. The mouth is open in a silent snarl, revealing rows of sharp, ivory teeth; saliva glistens faintly on the lower lip. The posture suggests alertness, a contained readiness for action. Subtle shadows define the cheekbones and jawline, emphasizing a primal strength. There's an almost palpable sense of restrained energy within the frame.",
+      "output": "{\"subject\":\"face poised between human and feline, warm tones of ochre gold and umber mottled across the skin with darker spots like a leopard's coat, narrow slits of amber eyes reflecting ambient glow with unnerving intensity, fine white whiskers fanning outward from muzzle, slight furrow creases the brow, mouth open in silent snarl revealing rows of sharp ivory teeth, saliva glistens on lower lip, posture of alertness and contained readiness for action, subtle shadows defining cheekbones and jawline emphasizing primal strength, restrained energy\",\"style\":[],\"lighting\":\"diffused light filtering through unseen canopy, warm tones, subtle shadows\",\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"primal, intense, restrained energy\",\"negative_prompt\":null}",
+      "error": "低分: 0.4612"
+    },
+    {
+      "raw_prompt": "An artist leans into her framed painting, to comb the lustrous long hair of the woman in the painting.",
+      "output": "{\"subject\":\"an artist leaning into her framed painting, combing the lustrous long hair of the woman in the painting\",\"style\":[],\"lighting\":null,\"environment\":\"framed painting\",\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.4873"
+    },
+    {
+      "raw_prompt": "Wabisabi, realistic 8k photography of a rain-slicked traditional Japanese alleyway at night, glowing paper lanterns, detailed reflections on puddles, nostalgic and quiet atmosphere, lots or power lines.",
+      "output": "{\"subject\":\"\",\"style\":[\"wabisabi\",\"realistic\",\"8k photography\"],\"lighting\":null,\"environment\":\"rain-slicked traditional Japanese alleyway at night, glowing paper lanterns, detailed reflections on puddles, lots of power lines\",\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"nostalgic and quiet atmosphere\",\"negative_prompt\":null}",
+      "error": "Schema 校验失败: 1 validation error for ImageJSON\nsubject\n  Value error, subject 不能为空 [type=value_error, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+    },
+    {
+      "raw_prompt": "Create a photorealistic image of a majestic Great Horned Owl perched on a moss-covered rock in a dense evergreen forest. The owl, with its sharp, intelligent gaze and detailed plumage, is the focal point, positioned centrally and looking directly towards the viewer. The background is a blurred tapestry of dark green trees, softened by a light rain, which subtly adds to the moody atmosphere. The overall style is naturalistic and atmospheric, emphasizing the tranquility and wildness of the scene, with a slight emphasis on depth of field to draw attention to the owl.",
+      "output": "{\"subject\":\"majestic Great Horned Owl perched on a moss-covered rock, sharp intelligent gaze, detailed plumage, positioned centrally, looking directly towards the viewer\",\"style\":[\"photorealistic\",\"naturalistic\",\"atmospheric\"],\"lighting\":null,\"environment\":\"dense evergreen forest, blurred tapestry of dark green trees, softened by light rain\",\"camera\":\"central composition, depth of field\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"moody, tranquil, wild\",\"negative_prompt\":null}",
+      "error": "低分: 0.4582"
+    },
+    {
+      "raw_prompt": "regal anime female figure shown in a dramatic side-view profile, captured from a strong dutch angle with a tilted horizon, creating a dynamic, unbalanced composition. The camera is positioned slightly below and to the side, emphasizing scale and tension.\n\nHer form is split symmetrically along the body axis, left side glossy black, right side ivory white, both surfaces adorned with intricate flowing golden filigree. She has glowing orange slit-pupil eyes, visible in profile, and long black hair trailing behind, tipped with fiery orange strands that follow the tilted motion of the scene.\n\nA dark, ornate crown-helmet with sharp golden thorns extends backward, forming mechanical, wing-like structures that angle diagonally through the frame. Her body appears smooth, sculptural, and biomechanical, with divine gold patterns flowing like living circuits across her silhouette.\n\nThe visual style blends dark fantasy, divine elegance, and baroque mecha aesthetics, enhanced by the tilted camera angle that heightens drama, power, and instability.",
+      "output": "{\"subject\":\"regal anime female figure, dramatic side-view profile, strong dutch angle with tilted horizon, camera slightly below and to the side, form split symmetrically left side glossy black right side ivory white, intricate flowing golden filigree, glowing orange slit-pupil eyes, long black hair trailing behind tipped with fiery orange strands, dark ornate crown-helmet with sharp golden thorns extending backward forming mechanical wing-like structures, smooth sculptural biomechanical body with divine gold patterns flowing like living circuits\",\"style\":[\"anime\",\"dark fantasy\",\"divine elegance\",\"baroque mecha aesthetics\"],\"lighting\":null,\"environment\":null,\"camera\":\"strong dutch angle, tilted horizon, dynamic unbalanced composition, camera positioned slightly below and to the side emphasizing scale and tension\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"dramatic, power, instability\",\"negative_prompt\":null}",
+      "error": "低分: 0.4227"
+    },
+    {
+      "raw_prompt": "style: ancient egyptian drawing on wall,\n\nwoman sleeping on sofa,  \nshort shelf above her head. small glass vase with water with flowers on the shelf above woman's head. A black cat is sitting on a shelf next to the vase. The cat pushes the vase with his paw. The vase tilted sideways. the vase about to fall down. The cat looking down.",
+      "output": "{\"subject\":\"woman sleeping on sofa, short shelf above her head, small glass vase with water with flowers on the shelf above woman&#39;s head, black cat sitting on shelf next to vase, cat pushes vase with paw, vase tilted sideways about to fall down, cat looking down\",\"style\":[\"ancient egyptian drawing on wall\"],\"lighting\":null,\"environment\":null,\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":null,\"negative_prompt\":null}",
+      "error": "低分: 0.4697"
+    },
+    {
+      "raw_prompt": "zidiusArt, black cat is looking in shock at deformed and elongated white bird looking at it. Cat is atop of birdhouse. Cat is clearly horrified and shocked, with eyes wide open and mouth slightly open as well. Bird has extremely long neck. Cat is looking at bird",
+      "output": "{\"subject\":\"black cat looking in shock at deformed and elongated white bird with extremely long neck looking at it, cat atop of birdhouse, cat clearly horrified and shocked with eyes wide open and mouth slightly open\",\"style\":[],\"lighting\":null,\"environment\":\"birdhouse\",\"camera\":null,\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[\"zidiusArt\"],\"mood\":\"horrified, shocked\",\"negative_prompt\":null}",
+      "error": "低分: 0.4904"
+    },
+    {
+      "raw_prompt": "In a world where art and science merge to create chaos, a traditional Ra Airship made entirely out of dark wood stands tall against the backdrop of the black hole. The image depicts a breathtaking view of this unconventional vessel, with intricate patterns made from swirling white clouds. This unique design is both visually stunning and terrifying for all who dare approach it.",
+      "output": "{\"subject\":\"traditional Ra Airship made entirely out of dark wood, intricate patterns made from swirling white clouds, visually stunning and terrifying\",\"style\":[],\"lighting\":null,\"environment\":\"backdrop of the black hole\",\"camera\":\"breathtaking view\",\"quality_tags\":[],\"lora_tags\":[],\"artist_reference\":[],\"mood\":\"chaos, visually stunning and terrifying\",\"negative_prompt\":null}",
+      "error": "低分: 0.33"
+    }
+  ]
+}
