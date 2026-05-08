@@ -46,7 +46,7 @@ class LLMClient:
     def _default_model(cls, provider: str) -> str:
         defaults = {
             "openai": "gpt-4o-mini",
-            "perplexity": "google/gemini-3-flash-preview",
+            "perplexity": "openai/gpt-4o-mini",
             "ollama": "qwen2.5:7b",
             "grok": "grok-4-1-fast-non-reasoning",
         }
@@ -68,6 +68,8 @@ class LLMClient:
             base = self.base_url or "http://localhost:11434/v1"
             return OpenAI(base_url=base, api_key="ollama")
         elif self.provider == "perplexity":
+            # Agent API: base_url 必须带 /v1
+            # 调用方式: client.responses.create(model=..., input=..., instructions=...)
             return OpenAI(
                 api_key=self.api_key,
                 base_url="https://api.perplexity.ai/v1",
@@ -95,10 +97,45 @@ class LLMClient:
             if user_prompt:
                 messages.append({"role": "user", "content": user_prompt})
 
+        if self.provider == "perplexity":
+            return self._chat_perplexity_agent(messages)
         return self._chat_openai_compat(messages)
 
+    def _chat_perplexity_agent(self, messages: list[dict]) -> str:
+        """
+        Perplexity Agent API (Responses API 兼容接口)
+        文档: https://docs.perplexity.ai/docs/agent-api/openai-compatibility
+
+        - 使用 client.responses.create() → POST /v1/responses (alias: /v1/agent)
+        - system message → instructions 参数
+        - user/assistant messages → input 参数（消息数组）
+        - 返回 response.output_text
+        """
+        instructions = None
+        input_messages = []
+
+        for msg in messages:
+            if msg["role"] == "system":
+                # system 消息提取为 instructions
+                instructions = msg["content"]
+            else:
+                input_messages.append(msg)
+
+        # input 支持纯字符串或消息数组；这里统一用消息数组以保留多轮上下文
+        create_kwargs: dict = {
+            "model": self.model or "openai/gpt-4o-mini",
+            "input": input_messages if len(input_messages) > 1 else (
+                input_messages[0]["content"] if input_messages else ""
+            ),
+        }
+        if instructions:
+            create_kwargs["instructions"] = instructions
+
+        response = self._client.responses.create(**create_kwargs)
+        return response.output_text
+
     def _chat_openai_compat(self, messages: list[dict]) -> str:
-        """OpenAI / Ollama / Grok 标准接口"""
+        """OpenAI / Ollama / Grok 标准 Chat Completions 接口"""
         response = self._client.chat.completions.create(
             model=self.model or "gpt-4o-mini",
             messages=messages,
