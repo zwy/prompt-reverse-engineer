@@ -8,7 +8,7 @@ from schema import parse_and_validate, ImageJSON
 from llm_client import get_llm
 
 
-# ── 规则评分 ──────────────────────────────────────────────────────────────────────────────
+# ── 规则评分 ──────────────────────────────────────────────────────────────────────────────────────
 
 def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     """
@@ -40,7 +40,7 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     return round(score, 4)
 
 
-# ── LLM Judge ────────────────────────────────────────────────────────────────────────────────
+# ── LLM Judge ────────────────────────────────────────────────────────────────────────────────────────────
 
 class JSONQualityJudge(dspy.Signature):
     """你是专业的 AI 图像提示词质量评估专家。
@@ -55,7 +55,7 @@ class JSONQualityJudge(dspy.Signature):
 judge_module = dspy.ChainOfThought(JSONQualityJudge)
 
 
-# ── GEPA metric（带 Feedback）───────────────────────────────────────────────────────────────
+# ── GEPA metric（带 Feedback）───────────────────────────────────────────────────────────────────────
 
 def metric_with_feedback(
     gold,
@@ -100,34 +100,15 @@ def metric_with_feedback(
     return dspy.Prediction(score=round(final, 4), feedback=feedback)
 
 
-# ── 批量评估入口 ───────────────────────────────────────────────────────────────────────────
+# ── 批量评估入口 ───────────────────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    import os
     from pathlib import Path
+    from optimize_gepa import build_dspy_lm
 
-    # DSPy 使用 LLMClient 配置的同一 provider
     llm = get_llm()
-    if llm.provider == "perplexity":
-        dspy_lm = dspy.LM(
-            f"openai/{llm.model}",
-            api_key=llm.api_key,
-            api_base="https://api.perplexity.ai",
-        )
-    elif llm.provider == "ollama":
-        dspy_lm = dspy.LM(
-            f"ollama/{llm.model}",
-            api_base=llm.base_url or "http://localhost:11434",
-        )
-    elif llm.provider == "grok":
-        dspy_lm = dspy.LM(
-            f"openai/{llm.model}",
-            api_key=llm.api_key,
-            api_base="https://api.x.ai/v1",
-        )
-    else:
-        dspy_lm = dspy.LM(f"openai/{llm.model}", api_key=llm.api_key)
-
+    # 统一使用 build_dspy_lm，避免 LiteLLM 对 perplexity 自动附加 response_format
+    dspy_lm = build_dspy_lm(llm)
     dspy.configure(lm=dspy_lm)
 
     data_path = Path("data/prompts.json")
