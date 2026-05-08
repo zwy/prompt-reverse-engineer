@@ -73,7 +73,7 @@ def main():
 
     task_lm = build_dspy_lm(llm)
 
-    # GEPA 反思用强模型（如果是 perplexity 则同 provider 切换强模型）
+    # GEPA reflection 用强模型（如果配置了 GEPA_PROMPT_MODEL 则切换）
     import os
     from llm_client import LLMClient
     strong_model = os.getenv("GEPA_PROMPT_MODEL", "")
@@ -84,9 +84,10 @@ def main():
             api_key=llm.api_key,
             base_url=llm.base_url,
         )
-        prompt_lm = build_dspy_lm(prompt_llm)
+        # reflection_lm 推荐高温度 + 大 max_tokens
+        reflection_lm = build_dspy_lm(prompt_llm)
     else:
-        prompt_lm = task_lm  # 没配置则复用同一模型
+        reflection_lm = task_lm  # 没配置则复用同一模型
 
     dspy.configure(lm=task_lm)
 
@@ -106,12 +107,19 @@ def main():
     print(f"训练集: {len(trainset)}，验证集: {len(devset)}")
 
     # ── GEPA 优化 ──
+    # 新版 API 变更：
+    #   - prompt_model / task_model 已废弃，task model 由 dspy.configure(lm=...) 控制
+    #   - reflection_lm 替代 prompt_model
+    #   - num_iterations 已废弃，必须指定 auto / max_full_evals / max_metric_calls 三选一
+    #   - verbose 已废弃，改用 log_dir 记录日志
+    auto_budget = os.getenv("GEPA_AUTO_BUDGET", "medium")  # light / medium / heavy
+    log_dir = os.getenv("GEPA_LOG_DIR", "outputs/gepa_logs")
+
     optimizer = dspy.GEPA(
         metric=metric_with_feedback,
-        prompt_model=prompt_lm,
-        task_model=task_lm,
-        num_iterations=10,
-        verbose=True,
+        reflection_lm=reflection_lm,
+        auto=auto_budget,           # "light" | "medium" | "heavy"
+        log_dir=log_dir,
     )
 
     module = PromptParser()
