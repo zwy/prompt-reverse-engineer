@@ -63,16 +63,17 @@ class LLMClient:
         return os.environ.get(key, "")
 
     def _build_client(self):
-        if self.provider in ("openai", "perplexity", "grok"):
-            from openai import OpenAI
+        from openai import OpenAI
+        if self.provider == "ollama":
+            base = self.base_url or "http://localhost:11434/v1"
+            return OpenAI(base_url=base, api_key="ollama")
+        elif self.provider == "perplexity":
+            return OpenAI(api_key=self.api_key, base_url="https://api.perplexity.ai")
+        elif self.provider in ("openai", "grok"):
             kwargs = {"api_key": self.api_key} if self.api_key else {}
             if self.base_url:
                 kwargs["base_url"] = self.base_url
             return OpenAI(**kwargs)
-        elif self.provider == "ollama":
-            from openai import OpenAI
-            base = self.base_url or "http://localhost:11434/v1"
-            return OpenAI(base_url=base, api_key="ollama")
         else:
             raise ValueError(f"不支持的 provider: {self.provider}")
 
@@ -91,31 +92,7 @@ class LLMClient:
             if user_prompt:
                 messages.append({"role": "user", "content": user_prompt})
 
-        if self.provider == "perplexity":
-            return self._chat_perplexity(messages)
-        else:
-            return self._chat_openai_compat(messages)
-
-    def _chat_perplexity(self, messages: list[dict]) -> str:
-        """使用 Perplexity Responses API"""
-        from perplexity import Perplexity
-
-        client = Perplexity(api_key=self.api_key) if self.api_key else Perplexity()
-
-        system_parts = [m["content"] for m in messages if m["role"] == "system"]
-        user_parts = [m["content"] for m in messages if m["role"] != "system"]
-
-        parts = []
-        if system_parts:
-            parts.append("[Instructions]\n" + "\n\n".join(system_parts))
-        parts.append("[Task]\n" + "\n\n".join(user_parts))
-        input_text = "\n\n".join(parts)
-
-        response = client.responses.create(
-            model=self.model or "google/gemini-3-flash-preview",
-            input=input_text,
-        )
-        return response.output_text
+        return self._chat_openai_compat(messages)
 
     def _chat_openai_compat(self, messages: list[dict]) -> str:
         """OpenAI / Ollama / Grok 标准接口"""
