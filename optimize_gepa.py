@@ -37,8 +37,9 @@ class PerplexityAgentLM(dspy.LM):
 
     def __call__(self, prompt=None, messages=None, **kwargs):
         """
-        DSPy 会以 messages 列表调用此方法。
-        我们拿到 messages 后，拆分 system/user 传给 Agent API。
+        DSPy 通常以 messages 列表调用此方法，但 GEPA reflection 阶段会以
+        prompt 字符串直接调用（lm(full_prompt) 形式）。
+        两种入参都需要正确处理，否则会向 API 传入空数组导致 400 报错。
         """
         # 从 kwargs 中过滤掉 LiteLLM 专用字段，避免传给 OpenAI SDK 报错
         _drop = {"response_format", "num_retries", "cache", "metadata",
@@ -48,37 +49,34 @@ class PerplexityAgentLM(dspy.LM):
         # 拆分 system instructions 和 user input
         instructions = None
         input_messages = []
-        for msg in (messages or []):
-            if msg.get("role") == "system":
-                instructions = msg["content"]
-            else:
-                input_messages.append(msg)
+
+        if messages:
+            # 正常 DSPy 调用路径：messages 列表
+            for msg in messages:
+                if msg.get("role") == "system":
+                    instructions = msg["content"]
+                else:
+                    input_messages.append(msg)
+        elif prompt:
+            # GEPA reflection 调用路径：直接传入 prompt 字符串
+            input_messages = [{"role": "user", "content": prompt}]
+
+        # 单条消息直接传字符串，多条传数组；避免传入空数组
+        input_val = (
+            input_messages[0]["content"] if len(input_messages) == 1
+            else input_messages
+        )
 
         create_kwargs: dict[str, Any] = {
             "model": self._pplx_model,
-            "input": input_messages if len(input_messages) != 1
-                     else input_messages[0]["content"],
+            "input": input_val,
         }
         if instructions:
             create_kwargs["instructions"] = instructions
         create_kwargs.update(clean_kwargs)
 
         response = self._pplx_client.responses.create(**create_kwargs)
-        text = response.output_text
-
-        # DSPy 期望返回与 LiteLLM 相同的 choices 结构
-        # 简单包装成 ModelResponse 兼容结构
-        from types import SimpleNamespace
-        choice = SimpleNamespace(
-            message=SimpleNamespace(content=text, role="assistant"),
-            finish_reason="stop",
-        )
-        result = SimpleNamespace(
-            choices=[choice],
-            model=self._pplx_model,
-            usage=getattr(response, "usage", None),
-        )
-        return [text]  # dspy.LM.__call__ 期望返回 completions 列表
+        return [response.output_text]  # dspy.LM.__call__ 期望返回 completions 列表
 
 
 # ───────────────────────────────────────────────────────────────────────────────
