@@ -97,7 +97,20 @@ python data/filter_prompts.py --inplace
 ### 5. 基线评估
 
 ```bash
-python evaluate.py
+# 快速测前 5 条（最简单）
+python evaluate.py -n 5
+
+# 跳过前 20 条，测第 21~30 条
+python evaluate.py -n 10 --offset 20
+
+# 随机抽 10 条测试（seed=42 保证每次结果一样）
+python evaluate.py -n 10 --shuffle
+
+# 测试新版 System Prompt 效果
+python evaluate.py -n 20 --sp outputs/system_prompt_v1.txt
+
+# 查看帮助
+python evaluate.py --help
 ```
 
 ### 6. GEPA 自动优化
