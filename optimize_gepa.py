@@ -204,7 +204,17 @@ def main():
     optimized.save(str(out_dir / "optimized_module.json"))
     print("已保存优化模块至 outputs/optimized_module.json")
 
-    sig = optimized.parser.signature
+    # ChainOfThought 没有 .signature，需通过 .predict.signature 访问
+    # 如果 .predict 也不存在，尝试从子预测器列表取
+    parser = optimized.parser
+    if hasattr(parser, "predict"):
+        sig = parser.predict.signature
+    elif hasattr(parser, "prog"):
+        sig = parser.prog.signature
+    else:
+        # 备用：通过 predictors() 取第一个
+        sig = optimized.predictors()[0].signature
+
     best_prompt = sig.instructions
     sp_path = out_dir / "system_prompt_best.txt"
     sp_path.write_text(best_prompt, encoding="utf-8")
