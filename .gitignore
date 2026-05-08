@@ -30,6 +30,7 @@ outputs/gepa_logs/
 outputs/*.json
 outputs/*.txt
 !outputs/.gitkeep
+!outputs/system_prompt_*.txt
 
 # IDE
 .vscode/
