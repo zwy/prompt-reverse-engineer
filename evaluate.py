@@ -1,7 +1,11 @@
-"""双通道评估模块：规则评分 + LLM Judge（带 Feedback）"""
+"""
+双通道评估模块：规则评分 + LLM Judge（带 Feedback）
+支持通过 LLMClient 切换 provider
+"""
 import json
 import dspy
 from schema import parse_and_validate, ImageJSON
+from llm_client import get_llm
 
 
 # ── 规则评分 ──────────────────────────────────────────────────────────────────
@@ -11,14 +15,13 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     基于规则的评分，满分 1.0。
     - 字段覆盖率 (40%)
     - 关键词保留率 (40%)
-    - lora_tags 单独提取 (20%)
+    - lora_tags 单独提取奖励 (20%)
     """
     score = 0.0
     key_fields = ["subject", "style", "lighting", "environment", "quality_tags"]
     filled = sum(1 for f in key_fields if getattr(parsed, f))
     score += (filled / len(key_fields)) * 0.4
 
-    # 关键词保留率（过滤长度 <= 3 的无意义短词）
     tokens = {t for t in raw_prompt.lower().replace(",", " ").split() if len(t) > 3}
     all_text = " ".join([
         parsed.subject,
@@ -37,7 +40,7 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     return round(score, 4)
 
 
-# ── LLM Judge ────────────────────────────────────────────────────────────────
+# ── LLM Judge ─────────────────────────────────────────────────────────────────
 
 class JSONQualityJudge(dspy.Signature):
     """你是专业的 AI 图像提示词质量评估专家。
@@ -52,12 +55,12 @@ class JSONQualityJudge(dspy.Signature):
 judge_module = dspy.ChainOfThought(JSONQualityJudge)
 
 
-# ── GEPA metric（带 Feedback）────────────────────────────────────────────────
+# ── GEPA metric（带 Feedback）─────────────────────────────────────────────────
 
 def metric_with_feedback(example, prediction, trace=None):
     """
-    GEPA 优化器要求的 metric 函数。
-    返回 dspy.Prediction(score=..., feedback=...)。
+    GEPA 优化器要求的 metric 函数格式。
+    返回 dspy.Prediction(score=..., feedback=...)
     """
     raw_prompt = example.raw_prompt
     json_str = getattr(prediction, "image_json", "")
@@ -96,8 +99,30 @@ if __name__ == "__main__":
     import os
     from pathlib import Path
 
-    lm = dspy.LM("openai/gpt-4o-mini")
-    dspy.configure(lm=lm)
+    # DSPy 使用 LLMClient 配置的同一 provider
+    llm = get_llm()
+    if llm.provider == "perplexity":
+        # DSPy 通过 OpenAI 兼容接口访问 Perplexity
+        dspy_lm = dspy.LM(
+            f"openai/{llm.model}",
+            api_key=llm.api_key,
+            api_base="https://api.perplexity.ai",
+        )
+    elif llm.provider == "ollama":
+        dspy_lm = dspy.LM(
+            f"ollama/{llm.model}",
+            api_base=llm.base_url or "http://localhost:11434",
+        )
+    elif llm.provider == "grok":
+        dspy_lm = dspy.LM(
+            f"openai/{llm.model}",
+            api_key=llm.api_key,
+            api_base="https://api.x.ai/v1",
+        )
+    else:
+        dspy_lm = dspy.LM(f"openai/{llm.model}", api_key=llm.api_key)
+
+    dspy.configure(lm=dspy_lm)
 
     data_path = Path("data/prompts.json")
     if not data_path.exists():
@@ -107,28 +132,16 @@ if __name__ == "__main__":
     with open(data_path, encoding="utf-8") as f:
         dataset = json.load(f)
 
-    # 读取当前最新版 System Prompt
     sp_path = Path("outputs/system_prompt_v0.txt")
     if not sp_path.exists():
         print(f"请先创建 {sp_path}")
         exit(1)
     system_prompt = sp_path.read_text(encoding="utf-8")
 
-    from openai import OpenAI
-    client = OpenAI()
-
     scores, failures = [], []
     for i, item in enumerate(dataset):
         raw = item["prompt"]
-        resp = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": raw},
-            ],
-            temperature=0,
-        )
-        output = resp.choices[0].message.content
+        output = llm.chat(system_prompt=system_prompt, user_prompt=raw)
         parsed, err = parse_and_validate(output)
         if parsed:
             s = rule_score(raw, parsed)

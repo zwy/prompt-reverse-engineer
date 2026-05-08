@@ -1,31 +1,32 @@
-"""手动 Meta-Prompting 反思循环 - 不依赖 DSPy，让 LLM 自己分析失败案例并改写 System Prompt"""
+"""
+手动 Meta-Prompting 反思循环
+让 LLM 自己分析失败案例并改写 System Prompt
+使用 LLMClient 统一接口，支持 perplexity/openai/ollama/grok
+"""
 import json
 from pathlib import Path
-from openai import OpenAI
-
-client = OpenAI()
+from llm_client import get_llm
 
 
 def reflect_and_improve(system_prompt: str, failed_cases: list[dict], version: int) -> str:
     """
-    让 GPT-4o 分析失败案例，自动改写 System Prompt。
+    让 LLM 分析失败案例，自动改写 System Prompt。
 
     Args:
         system_prompt: 当前版本的 System Prompt
         failed_cases: [{"raw_prompt": ..., "output": ..., "error": ...}, ...]
-        version: 当前版本号，用于保存文件
+        version: 当前版本号
 
     Returns:
         改进后的新 System Prompt
     """
-    # 最多取 5 条失败案例，避免超出 context
     cases = failed_cases[:5]
     cases_text = "\n\n".join([
         f"【案例 {i+1}】\n输入：{c['raw_prompt'][:300]}\n输出：{c['output'][:500]}\n问题：{c['error']}"
         for i, c in enumerate(cases)
     ])
 
-    meta_prompt = f"""你是一个 System Prompt 优化专家，专注于文生图提示词结构化任务。
+    user_prompt = f"""你是一个 System Prompt 优化专家，专注于文生图提示词结构化任务。
 
 当前 System Prompt（v{version}）：
 ```
@@ -43,13 +44,8 @@ def reflect_and_improve(system_prompt: str, failed_cases: list[dict], version: i
 3. 如有必要，可加入边界条件说明（如 lora_tags 的提取规则）
 4. 只输出新的 System Prompt 文本，不要有任何解释或前言"""
 
-    resp = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[{"role": "user", "content": meta_prompt}],
-        temperature=0.3,
-    )
-    new_prompt = resp.choices[0].message.content.strip()
-    return new_prompt
+    llm = get_llm()
+    return llm.chat(user_prompt=user_prompt)
 
 
 def run_reflection_loop(max_versions: int = 5):
@@ -57,7 +53,6 @@ def run_reflection_loop(max_versions: int = 5):
     out_dir = Path("outputs")
     out_dir.mkdir(exist_ok=True)
 
-    # 读取最新版评估报告
     report_path = out_dir / "eval_report.json"
     if not report_path.exists():
         print("请先运行 evaluate.py 生成评估报告")
@@ -76,7 +71,7 @@ def run_reflection_loop(max_versions: int = 5):
 
     # 找到当前最新版 System Prompt
     version = 0
-    while (out_dir / f"system_prompt_v{version+1}.txt").exists():
+    while (out_dir / f"system_prompt_v{version + 1}.txt").exists():
         version += 1
 
     current_sp_path = out_dir / f"system_prompt_v{version}.txt"
@@ -88,14 +83,14 @@ def run_reflection_loop(max_versions: int = 5):
     print(f"当前版本: v{version}")
 
     for i in range(max_versions):
-        print(f"\n--- 第 {i+1} 轮反思 ---")
+        print(f"\n--- 第 {i + 1} 轮反思 ---")
         new_prompt = reflect_and_improve(current_prompt, failures, version)
 
         new_version = version + 1
         new_path = out_dir / f"system_prompt_v{new_version}.txt"
         new_path.write_text(new_prompt, encoding="utf-8")
         print(f"新版 System Prompt 已保存至 {new_path}")
-        print("--- 新 Prompt 预览 ---")
+        print("--- 新 Prompt 预览（前500字）---")
         print(new_prompt[:500])
 
         current_prompt = new_prompt

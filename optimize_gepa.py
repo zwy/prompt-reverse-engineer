@@ -1,15 +1,43 @@
-"""GEPA 自动优化主流程 - 基于反思进化自动迭代 System Prompt"""
+"""
+GEPA 自动优化主流程
+基于反思进化自动迭代 System Prompt
+使用 LLMClient 统一接口，支持 perplexity/openai/ollama/grok
+"""
 import json
 import dspy
 from pathlib import Path
+from llm_client import get_llm
 from evaluate import metric_with_feedback
+
+
+def build_dspy_lm(llm) -> dspy.LM:
+    """根据 LLMClient 配置构建对应的 DSPy LM"""
+    if llm.provider == "perplexity":
+        return dspy.LM(
+            f"openai/{llm.model}",
+            api_key=llm.api_key,
+            api_base="https://api.perplexity.ai",
+        )
+    elif llm.provider == "ollama":
+        return dspy.LM(
+            f"ollama/{llm.model}",
+            api_base=llm.base_url or "http://localhost:11434",
+        )
+    elif llm.provider == "grok":
+        return dspy.LM(
+            f"openai/{llm.model}",
+            api_key=llm.api_key,
+            api_base="https://api.x.ai/v1",
+        )
+    else:  # openai
+        return dspy.LM(f"openai/{llm.model}", api_key=llm.api_key)
 
 
 class PromptToImageJSON(dspy.Signature):
     """你是专业的 SD 提示词结构化专家。
     将文生图 prompt 解析为结构化 image-json。
     严格只输出 JSON 对象，不含任何额外文字、解释或 markdown。
-    
+
     输出字段：
     - subject: 主体描述（人物/物体/场景）
     - style: 画风列表
@@ -40,8 +68,26 @@ class PromptParser(dspy.Module):
 
 def main():
     # ── 配置 LLM ──
-    task_lm = dspy.LM("openai/gpt-4o-mini", max_tokens=1024)
-    prompt_lm = dspy.LM("openai/gpt-4o", max_tokens=2048)  # 强模型做反思
+    llm = get_llm()
+    print(f"使用 Provider: {llm.provider} | 模型: {llm.model}")
+
+    task_lm = build_dspy_lm(llm)
+
+    # GEPA 反思用强模型（如果是 perplexity 则同 provider 切换强模型）
+    import os
+    from llm_client import LLMClient
+    strong_model = os.getenv("GEPA_PROMPT_MODEL", "")
+    if strong_model:
+        prompt_llm = LLMClient(
+            provider=llm.provider,
+            model=strong_model,
+            api_key=llm.api_key,
+            base_url=llm.base_url,
+        )
+        prompt_lm = build_dspy_lm(prompt_llm)
+    else:
+        prompt_lm = task_lm  # 没配置则复用同一模型
+
     dspy.configure(lm=task_lm)
 
     # ── 加载数据集 ──
@@ -56,8 +102,7 @@ def main():
         dspy.Example(raw_prompt=d["prompt"]).with_inputs("raw_prompt")
         for d in data
     ]
-    trainset = examples[:70]
-    devset = examples[70:]
+    trainset, devset = examples[:70], examples[70:]
     print(f"训练集: {len(trainset)}，验证集: {len(devset)}")
 
     # ── GEPA 优化 ──
@@ -70,7 +115,7 @@ def main():
     )
 
     module = PromptParser()
-    print("开始 GEPA 优化...")
+    print("\n开始 GEPA 优化...")
     optimized = optimizer.compile(module, trainset=trainset, valset=devset)
 
     # ── 保存结果 ──
@@ -80,7 +125,6 @@ def main():
     optimized.save(str(out_dir / "optimized_module.json"))
     print("已保存优化模块至 outputs/optimized_module.json")
 
-    # 导出最优 System Prompt 文本
     sig = optimized.parser.signature
     best_prompt = sig.instructions
     sp_path = out_dir / "system_prompt_best.txt"
