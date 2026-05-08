@@ -68,7 +68,10 @@ class LLMClient:
             base = self.base_url or "http://localhost:11434/v1"
             return OpenAI(base_url=base, api_key="ollama")
         elif self.provider == "perplexity":
-            return OpenAI(api_key=self.api_key, base_url="https://api.perplexity.ai")
+            return OpenAI(
+                api_key=self.api_key,
+                base_url="https://api.perplexity.ai/v1",
+            )
         elif self.provider in ("openai", "grok"):
             kwargs = {"api_key": self.api_key} if self.api_key else {}
             if self.base_url:
