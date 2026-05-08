@@ -169,6 +169,7 @@ GEPA 优化每轮需调用 LLM 多次（评估 + 进化），100 条数据跑 10
 - [DSPy GEPA Optimizer](https://dspy.ai/api/optimizers/GEPA/overview/)
 - [CivitAI Prompt Scraper](https://github.com/jeffjbowie/CivitAI_Prompt_Scraper)
 - [DSPy GEPA HuggingFace Cookbook](https://huggingface.co/learn/cookbook/dspy_gepa)
+- [FOFR Prompting with JSON](https://www.fofr.ai/prompting-with-json)
 
 ## License
 
