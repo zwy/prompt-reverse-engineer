@@ -5,55 +5,116 @@ GEPA 自动优化主流程
 """
 import json
 import os
+from typing import Any
 import dspy
 from pathlib import Path
 from llm_client import get_llm, LLMClient
 from evaluate import metric_with_feedback
 
 
+# ───────────────────────────────────────────────────────────────────────────────
+class PerplexityAgentLM(dspy.LM):
+    """
+    自定义 DSPy LM，直接用 OpenAI SDK 调用 Perplexity Agent API
+    (client.responses.create → POST /v1/responses)。
+
+    为什么要自定义：
+      dspy.LM 底层用 LiteLLM，LiteLLM 调 perplexity 走 Chat Completions 接口，
+      并且自动附加 response_format: {type: json_object}。
+      但 Perplexity Agent API 不支持该字段，所以绕过 LiteLLM 直接调用。
+    """
+
+    def __init__(self, model: str, api_key: str, **kwargs):
+        # 传入一个虚拟的占位符 model 名让父类初始化，
+        # 但实际调用完全重写
+        super().__init__(model=f"openai/{model}", api_key=api_key, **kwargs)
+        from openai import OpenAI
+        self._pplx_client = OpenAI(
+            api_key=api_key,
+            base_url="https://api.perplexity.ai/v1",
+        )
+        self._pplx_model = model  # 原始模型名，如 xai/grok-4-1-fast-non-reasoning
+
+    def __call__(self, prompt=None, messages=None, **kwargs):
+        """
+        DSPy 会以 messages 列表调用此方法。
+        我们拿到 messages 后，拆分 system/user 传给 Agent API。
+        """
+        # 从 kwargs 中过滤掉 LiteLLM 专用字段，避免传给 OpenAI SDK 报错
+        _drop = {"response_format", "num_retries", "cache", "metadata",
+                 "acompletion", "mock_response", "api_base", "api_version"}
+        clean_kwargs = {k: v for k, v in kwargs.items() if k not in _drop}
+
+        # 拆分 system instructions 和 user input
+        instructions = None
+        input_messages = []
+        for msg in (messages or []):
+            if msg.get("role") == "system":
+                instructions = msg["content"]
+            else:
+                input_messages.append(msg)
+
+        create_kwargs: dict[str, Any] = {
+            "model": self._pplx_model,
+            "input": input_messages if len(input_messages) != 1
+                     else input_messages[0]["content"],
+        }
+        if instructions:
+            create_kwargs["instructions"] = instructions
+        create_kwargs.update(clean_kwargs)
+
+        response = self._pplx_client.responses.create(**create_kwargs)
+        text = response.output_text
+
+        # DSPy 期望返回与 LiteLLM 相同的 choices 结构
+        # 简单包装成 ModelResponse 兼容结构
+        from types import SimpleNamespace
+        choice = SimpleNamespace(
+            message=SimpleNamespace(content=text, role="assistant"),
+            finish_reason="stop",
+        )
+        result = SimpleNamespace(
+            choices=[choice],
+            model=self._pplx_model,
+            usage=getattr(response, "usage", None),
+        )
+        return [text]  # dspy.LM.__call__ 期望返回 completions 列表
+
+
+# ───────────────────────────────────────────────────────────────────────────────
 def build_dspy_lm(llm: LLMClient) -> dspy.LM:
     """
     根据 LLMClient 配置构建 DSPy LM。
-    与 llm_client.py 中 _build_client 逻辑保持一致：
 
-      perplexity → 直接用 perplexity/<model> + api_base
-                    LiteLLM 的 perplexity/ 前缀会路由到 api.perplexity.ai
-      ollama     → ollama/<model> + api_base
-      grok       → openai/<model> + api_base (xAI 兼容 OpenAI 协议)
-      openai     → openai/<model>
+    perplexity → PerplexityAgentLM（绕过 LiteLLM，直接用 Agent API）
+    ollama     → dspy.LM("ollama/...")
+    grok       → dspy.LM("openai/...", api_base=xai)
+    openai     → dspy.LM("openai/...")
     """
+    bare = llm.model.split("/")[-1] if "/" in llm.model else llm.model
+
     if llm.provider == "perplexity":
-        # llm.model 可能是 “xai/grok-4-1-fast-non-reasoning” 这样带前缀的格式，
-        # 也可能是 “openai/gpt-4o-mini” 。
-        # LiteLLM perplexity provider 要求格式： perplexity/<bare-model-name>
-        # 所以去掉已有 provider 前缀再拼接。
-        bare_model = llm.model.split("/")[-1] if "/" in llm.model else llm.model
-        return dspy.LM(
-            f"perplexity/{bare_model}",
-            api_key=llm.api_key,
-        )
+        return PerplexityAgentLM(model=llm.model, api_key=llm.api_key)
+
     elif llm.provider == "ollama":
-        base = llm.base_url or "http://localhost:11434"
         return dspy.LM(
-            f"ollama/{llm.model}",
-            api_base=base,
+            f"ollama/{bare}",
+            api_base=llm.base_url or "http://localhost:11434",
         )
     elif llm.provider == "grok":
-        # xAI 兴趣商兼容 OpenAI 协议，模型名原样传
-        bare_model = llm.model.split("/")[-1] if "/" in llm.model else llm.model
         return dspy.LM(
-            f"openai/{bare_model}",
+            f"openai/{bare}",
             api_key=llm.api_key,
             api_base="https://api.x.ai/v1",
         )
-    else:  # openai 及其他 OpenAI 兴趣商
+    else:  # openai
         kwargs: dict = {"api_key": llm.api_key} if llm.api_key else {}
         if llm.base_url:
             kwargs["api_base"] = llm.base_url
-        bare_model = llm.model.split("/")[-1] if "/" in llm.model else llm.model
-        return dspy.LM(f"openai/{bare_model}", **kwargs)
+        return dspy.LM(f"openai/{bare}", **kwargs)
 
 
+# ───────────────────────────────────────────────────────────────────────────────
 class PromptToImageJSON(dspy.Signature):
     """你是专业的 SD 提示词结构化专家。
     将文生图 prompt 解析为结构化 image-json。
