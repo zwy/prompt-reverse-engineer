@@ -4,33 +4,54 @@ GEPA 自动优化主流程
 使用 LLMClient 统一接口，支持 perplexity/openai/ollama/grok
 """
 import json
+import os
 import dspy
 from pathlib import Path
-from llm_client import get_llm
+from llm_client import get_llm, LLMClient
 from evaluate import metric_with_feedback
 
 
-def build_dspy_lm(llm) -> dspy.LM:
-    """根据 LLMClient 配置构建对应的 DSPy LM"""
+def build_dspy_lm(llm: LLMClient) -> dspy.LM:
+    """
+    根据 LLMClient 配置构建 DSPy LM。
+    与 llm_client.py 中 _build_client 逻辑保持一致：
+
+      perplexity → 直接用 perplexity/<model> + api_base
+                    LiteLLM 的 perplexity/ 前缀会路由到 api.perplexity.ai
+      ollama     → ollama/<model> + api_base
+      grok       → openai/<model> + api_base (xAI 兼容 OpenAI 协议)
+      openai     → openai/<model>
+    """
     if llm.provider == "perplexity":
+        # llm.model 可能是 “xai/grok-4-1-fast-non-reasoning” 这样带前缀的格式，
+        # 也可能是 “openai/gpt-4o-mini” 。
+        # LiteLLM perplexity provider 要求格式： perplexity/<bare-model-name>
+        # 所以去掉已有 provider 前缀再拼接。
+        bare_model = llm.model.split("/")[-1] if "/" in llm.model else llm.model
         return dspy.LM(
-            f"openai/{llm.model}",
+            f"perplexity/{bare_model}",
             api_key=llm.api_key,
-            api_base="https://api.perplexity.ai",
         )
     elif llm.provider == "ollama":
+        base = llm.base_url or "http://localhost:11434"
         return dspy.LM(
             f"ollama/{llm.model}",
-            api_base=llm.base_url or "http://localhost:11434",
+            api_base=base,
         )
     elif llm.provider == "grok":
+        # xAI 兴趣商兼容 OpenAI 协议，模型名原样传
+        bare_model = llm.model.split("/")[-1] if "/" in llm.model else llm.model
         return dspy.LM(
-            f"openai/{llm.model}",
+            f"openai/{bare_model}",
             api_key=llm.api_key,
             api_base="https://api.x.ai/v1",
         )
-    else:  # openai
-        return dspy.LM(f"openai/{llm.model}", api_key=llm.api_key)
+    else:  # openai 及其他 OpenAI 兴趣商
+        kwargs: dict = {"api_key": llm.api_key} if llm.api_key else {}
+        if llm.base_url:
+            kwargs["api_base"] = llm.base_url
+        bare_model = llm.model.split("/")[-1] if "/" in llm.model else llm.model
+        return dspy.LM(f"openai/{bare_model}", **kwargs)
 
 
 class PromptToImageJSON(dspy.Signature):
@@ -73,21 +94,17 @@ def main():
 
     task_lm = build_dspy_lm(llm)
 
-    # GEPA reflection 用强模型（如果配置了 GEPA_PROMPT_MODEL 则切换）
-    import os
-    from llm_client import LLMClient
+    # GEPA reflection 用强模型（可选，通过 GEPA_PROMPT_MODEL 指定）
     strong_model = os.getenv("GEPA_PROMPT_MODEL", "")
     if strong_model:
-        prompt_llm = LLMClient(
+        reflection_lm = build_dspy_lm(LLMClient(
             provider=llm.provider,
             model=strong_model,
             api_key=llm.api_key,
             base_url=llm.base_url,
-        )
-        # reflection_lm 推荐高温度 + 大 max_tokens
-        reflection_lm = build_dspy_lm(prompt_llm)
+        ))
     else:
-        reflection_lm = task_lm  # 没配置则复用同一模型
+        reflection_lm = task_lm
 
     dspy.configure(lm=task_lm)
 
@@ -107,18 +124,13 @@ def main():
     print(f"训练集: {len(trainset)}，验证集: {len(devset)}")
 
     # ── GEPA 优化 ──
-    # 新版 API 变更：
-    #   - prompt_model / task_model 已废弃，task model 由 dspy.configure(lm=...) 控制
-    #   - reflection_lm 替代 prompt_model
-    #   - num_iterations 已废弃，必须指定 auto / max_full_evals / max_metric_calls 三选一
-    #   - verbose 已废弃，改用 log_dir 记录日志
     auto_budget = os.getenv("GEPA_AUTO_BUDGET", "medium")  # light / medium / heavy
     log_dir = os.getenv("GEPA_LOG_DIR", "outputs/gepa_logs")
 
     optimizer = dspy.GEPA(
         metric=metric_with_feedback,
         reflection_lm=reflection_lm,
-        auto=auto_budget,           # "light" | "medium" | "heavy"
+        auto=auto_budget,
         log_dir=log_dir,
     )
 
