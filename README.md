@@ -13,9 +13,11 @@
 ## 项目架构
 
 ```
-Civitai Prompt 数据集 (100条)
+Civitai Prompt 数据集
         ↓
    数据采集模块 (data/fetch_civitai.py)
+        ↓
+   数据筛选模块 (data/filter_prompts.py)
         ↓
   LLM 转换模块 (optimize_gepa.py)
         ↓
@@ -32,6 +34,7 @@ Civitai Prompt 数据集 (100条)
 prompt-reverse-engineer/
 ├── data/
 │   ├── fetch_civitai.py        # Cursor 分页采集 Civitai 数据
+│   ├── filter_prompts.py       # 规则筛选：去掉低质量数据
 │   └── prompts.json            # 采集后的原始数据集（运行后生成，不入 git）
 ├── outputs/                    # 各版本 System Prompt 及评估报告（不入 git）
 ├── schema.py                   # Pydantic 强校验 image-json Schema
@@ -73,25 +76,43 @@ python data/fetch_civitai.py
 
 > **注意**：需要 [Civitai API Key](https://civitai.com/user/account)，在 `.env` 中配置 `CIVITAI_API_KEY`。
 
-### 4. 基线评估
+### 4. 数据筛选
+
+```bash
+# 预览筛选结果，不写文件
+python data/filter_prompts.py --dry-run
+
+# 筛选并保存到 data/prompts_filtered.json
+python data/filter_prompts.py
+
+# 或直接覆盖原文件
+python data/filter_prompts.py --inplace
+```
+
+筛选规则：
+- 去掉 prompt 长度 < 50 的过短数据
+- 去掉 prompt 里已包含结构化字段的（如 `"subject":`, `"style":` 等）
+- 去掉 prompt 长度 > 5000 的过长数据
+
+### 5. 基线评估
 
 ```bash
 python evaluate.py
 ```
 
-### 5. GEPA 自动优化
+### 6. GEPA 自动优化
 
 ```bash
 python optimize_gepa.py
 ```
 
-### 6. 或使用手动反思循环
+### 7. 或使用手动反思循环
 
 ```bash
 python meta_reflect.py
 ```
 
-### 7. 提取最优 Prompt
+### 8. 提取最优 Prompt
 
 ```bash
 # 从 outputs/ 中的 GEPA 历史文件提取评分最高的版本
@@ -100,12 +121,14 @@ python extract_best_prompt.py
 
 ## 推荐执行顺序
 
-1. 跑 `fetch_civitai.py` 采集 100 条 prompt，人工抽查 10 条确认质量
-2. 手写初始 `outputs/system_prompt_v0.txt`
-3. 用 `evaluate.py` 跑全量，找出评分 < 0.5 的失败案例
-4. 把失败案例喂给 `meta_reflect.py`，得到 v1
-5. 以 v1 为起点，用 GEPA 自动进化 10 轮
-6. 用 `extract_best_prompt.py` 提取最终最优版本作为生产用 System Prompt
+1. 跑 `fetch_civitai.py` 采集 100 条 prompt
+2. 跑 `filter_prompts.py --dry-run` 预览筛选结果，确认无误过滤
+3. 跑 `filter_prompts.py` 生成干净数据集
+4. 手写初始 `outputs/system_prompt_v0.txt`
+5. 用 `evaluate.py` 跑全量，找出评分 < 0.5 的失败案例
+6. 把失败案例喂给 `meta_reflect.py`，得到 v1
+7. 以 v1 为起点，用 GEPA 自动进化 10 轮
+8. 用 `extract_best_prompt.py` 提取最终最优版本作为生产用 System Prompt
 
 ## image-json 输出格式
 
