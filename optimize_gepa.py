@@ -6,6 +6,7 @@ GEPA 自动优化主流程
 import json
 import os
 from typing import Any
+from datetime import datetime
 import dspy
 from pathlib import Path
 from llm_client import get_llm, LLMClient
@@ -147,6 +148,10 @@ class PromptParser(dspy.Module):
 
 
 def main():
+    # ── 生成本次运行唯一 ID（时间戳） ──
+    run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+    print(f"本次运行 ID: {run_id}")
+
     # ── 配置 LLM ──
     llm = get_llm()
     print(f"使用 Provider: {llm.provider} | 模型: {llm.model}")
@@ -184,7 +189,8 @@ def main():
 
     # ── GEPA 优化 ──
     auto_budget = os.getenv("GEPA_AUTO_BUDGET", "medium")  # light / medium / heavy
-    log_dir = os.getenv("GEPA_LOG_DIR", "outputs/gepa_logs")
+    # 每次运行使用独立的 log 子目录，避免多轮日志混入
+    log_dir = os.getenv("GEPA_LOG_DIR", f"outputs/gepa_logs/{run_id}")
 
     optimizer = dspy.GEPA(
         metric=metric_with_feedback,
@@ -201,8 +207,18 @@ def main():
     out_dir = Path("outputs")
     out_dir.mkdir(exist_ok=True)
 
-    optimized.save(str(out_dir / "optimized_module.json"))
-    print("已保存优化模块至 outputs/optimized_module.json")
+    # 带时间戳的存档文件（每轮独立保留，不覆盖）
+    module_archive = out_dir / f"optimized_module_{run_id}.json"
+    sp_archive = out_dir / f"system_prompt_best_{run_id}.txt"
+
+    # latest 文件（始终指向最新一轮，方便 extract_best_prompt.py 默认读取）
+    module_latest = out_dir / "optimized_module_latest.json"
+    sp_latest = out_dir / "system_prompt_best.txt"
+
+    optimized.save(str(module_archive))
+    optimized.save(str(module_latest))
+    print(f"已保存优化模块至 {module_archive}")
+    print(f"已更新 latest 至 {module_latest}")
 
     # ChainOfThought 没有 .signature，需通过 .predict.signature 访问
     # 如果 .predict 也不存在，尝试从子预测器列表取
@@ -216,11 +232,13 @@ def main():
         sig = optimized.predictors()[0].signature
 
     best_prompt = sig.instructions
-    sp_path = out_dir / "system_prompt_best.txt"
-    sp_path.write_text(best_prompt, encoding="utf-8")
+
+    sp_archive.write_text(best_prompt, encoding="utf-8")
+    sp_latest.write_text(best_prompt, encoding="utf-8")
     print(f"\n=== 最优 System Prompt ===")
     print(best_prompt)
-    print(f"\n已保存至 {sp_path}")
+    print(f"\n已保存至 {sp_archive}")
+    print(f"已更新 latest 至 {sp_latest}")
 
 
 if __name__ == "__main__":
