@@ -8,7 +8,7 @@ from schema import parse_and_validate, ImageJSON
 from llm_client import get_llm
 
 
-# ── 规则评分 ──────────────────────────────────────────────────────────────────
+# ── 规则评分 ──────────────────────────────────────────────────────────────────────────────
 
 def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     """
@@ -40,7 +40,7 @@ def rule_score(raw_prompt: str, parsed: ImageJSON) -> float:
     return round(score, 4)
 
 
-# ── LLM Judge ─────────────────────────────────────────────────────────────────
+# ── LLM Judge ────────────────────────────────────────────────────────────────────────────────
 
 class JSONQualityJudge(dspy.Signature):
     """你是专业的 AI 图像提示词质量评估专家。
@@ -55,15 +55,22 @@ class JSONQualityJudge(dspy.Signature):
 judge_module = dspy.ChainOfThought(JSONQualityJudge)
 
 
-# ── GEPA metric（带 Feedback）─────────────────────────────────────────────────
+# ── GEPA metric（带 Feedback）───────────────────────────────────────────────────────────────
 
-def metric_with_feedback(example, prediction, trace=None):
+def metric_with_feedback(
+    gold,
+    pred,
+    trace=None,
+    pred_name: str = "",
+    pred_trace=None,
+):
     """
     GEPA 优化器要求的 metric 函数格式。
+    必须接受 5 个参数: (gold, pred, trace, pred_name, pred_trace)
     返回 dspy.Prediction(score=..., feedback=...)
     """
-    raw_prompt = example.raw_prompt
-    json_str = getattr(prediction, "image_json", "")
+    raw_prompt = gold.raw_prompt
+    json_str = getattr(pred, "image_json", "")
 
     parsed, err = parse_and_validate(json_str)
 
@@ -93,7 +100,7 @@ def metric_with_feedback(example, prediction, trace=None):
     return dspy.Prediction(score=round(final, 4), feedback=feedback)
 
 
-# ── 批量评估入口 ───────────────────────────────────────────────────────────────
+# ── 批量评估入口 ───────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     import os
@@ -102,7 +109,6 @@ if __name__ == "__main__":
     # DSPy 使用 LLMClient 配置的同一 provider
     llm = get_llm()
     if llm.provider == "perplexity":
-        # DSPy 通过 OpenAI 兼容接口访问 Perplexity
         dspy_lm = dspy.LM(
             f"openai/{llm.model}",
             api_key=llm.api_key,
